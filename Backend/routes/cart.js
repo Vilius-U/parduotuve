@@ -233,6 +233,9 @@ function generateSign(data, password) {
 }
 
 router.post('/pay', async (req, res) => {
+
+  console.log(req.params.body)
+
   try {
     const params = {
       orderid: 123,

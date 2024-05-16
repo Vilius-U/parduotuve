@@ -30,15 +30,18 @@ function Cart({ addToCart, cartData, removeFromCart, cursor }) {
     setLoading(false);
   }, []);
   async function paysera(Information) {
+    // window.location.href = "https://www.paysera.com/pay/?data=cHJvamVjdGlkPTI0MTk3NyZhY2NlcHR1cmw9aHR0cCUzQSUyRiUyRmluc3RhbGlrYS5sdCZjYW5jZWx1cmw9aHR0cCUzQSUyRiUyRmluc3RhbGlrYS5sdCZjYWxsYmFja3VybD1odHRwJTNBJTJGJTJGaW5zdGFsaWthLmx0JnRlc3Q9MSZvcmRlcmlkPTEyMyZwX2VtYWlsPWN1c3RvbWVyJTQwZW1haWwuY29tJmFtb3VudD0xMDAwJmN1cnJlbmN5PUVVUg==&sign=6bfec0c10a16c0c97175ebe2f5ee78db";
+
     try {
+      
       const response = await fetch('cart/pay', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(Information)
+        body: JSON.stringify({totalPrice})
       });
-
+      console.log(totalPrice)
       // Check if response is a redirect (Content-Type: text/html)
       if (response.redirected) {
         window.location.href = "https://www.paysera.com/pay/?data=cHJvamVjdGlkPTI0MTk3NyZhY2NlcHR1cmw9aHR0cCUzQSUyRiUyRmluc3RhbGlrYS5sdCZjYW5jZWx1cmw9aHR0cCUzQSUyRiUyRmluc3RhbGlrYS5sdCZjYWxsYmFja3VybD1odHRwJTNBJTJGJTJGaW5zdGFsaWthLmx0JnRlc3Q9MSZvcmRlcmlkPTEyMyZwX2VtYWlsPWN1c3RvbWVyJTQwZW1haWwuY29tJmFtb3VudD0xMDAwJmN1cnJlbmN5PUVVUg==&sign=6bfec0c10a16c0c97175ebe2f5ee78db";
@@ -171,7 +174,7 @@ function Cart({ addToCart, cartData, removeFromCart, cursor }) {
                 </h2>
               </div>
             </div>
-            <div className='button'>
+            <div className='button' onClick={paysera}>
               <button>
                 <div className='cartIconStyle'>
                   <IoBagCheckOutline className='cartIcon' />
