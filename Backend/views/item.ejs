@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/nouislider.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet'>
+    <link rel="stylesheet" href="/stylesheets/item.css">
+    <title>Instalika</title>
+</head>
+
+<body>
+
+    <header>
+
+        <div class="bgTop">
+            <div class="contacts">
+                <div class="leftalign">
+                    <div>
+                        <a href="tel:+37065565525">
+                            <i class="fa fa-phone"> +37065565525</i>
+                        </a>
+                    </div>
+
+                    <div>
+                        <a href="mailto:info@instalika.eu">
+                            <i class="fa fa-envelope"> info@instalika.eu</i>
+                        </a>
+                    </div>
+                    <div class="last">
+                        <a href="/about">
+                            <i class="fa fa-info-circle">
+                                Apie mus
+                            </i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="rightalign">
+                    <div class="darkmode">
+                        <i class="fa fa-moon-o"> Tamsus režimas</i>
+                    </div>
+                    <div>
+                        <a href="/login">
+                            <i class="fa fa-user"> Prisijungti</i>
+                        </a>
+                    </div>
+                    <div>
+                        <a href="/isiminti">
+                            <i class="fa fa-heart last"> Isiminti</i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bgBottom">
+            <div class="head">
+                <div class="content">
+                    <a href="/">
+                        <img src="/images/logo.png" alt="">
+                    </a>
+                </div>
+                <div class="content">
+                </div>
+                <div class="content rightside">
+                    <a href="/cart" style="text-decoration: none; color: white;"><%= items %><i class="fa fa-shopping-cart" style="font-size: 25px;"><b> € <%= cartItems.toFixed(2) %></b></i></a>
+                    <div class="search">
+                        <form id="searchForm" action="/search" method="GET">
+                            <input type="text" id="searchInput" name="query" placeholder="Search...">
+                            <button type="submit"><i id="searchButton" class="fa fa-search"></i></button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+
+
+    <div id="slider"></div>
+
+
+
+    <article>
+        <div class="main">
+            <div class="image"><img src="<%= prekes[0].IMAGE %>" alt=""></div>
+            <div class="maininfo">
+                <div class="info">
+                    <h1><%= prekes[0].TITLE %></h1>
+                </div>
+                <% if (prekes[0].MANUFACTURER) { %>
+                    <div style="padding-block: 5px;" class="info">
+                        Gamintojas: <%= prekes[0].MANUFACTURER %>
+                    </div>
+                <% } %>
+                <div class="info"><%- prekes[0].SHORT_DESCRIPTION %></div>
+                <div class="info"><h2><%= (parseFloat(prekes[0].PRICE).toFixed(2))%>€</h2></div>
+                <div class="amount">
+                    <% let amount=prekes[0].QTY; if (amount == 0) { %>
+                        <% prekes[0].QTY = "Šiuo metu prekės neturime"; %>
+                    <% } else if (amount == 1){ prekes[0].QTY = "Sandelije turime: <10" } else {prekes[0].QTY ="Sandelije turime: 10+"} %>
+                    <%= prekes[0].QTY %>
+                </div>
+                <div class="buttons">
+                    
+                        <button class="shopping" onclick="addToCart(<%= prekes[0].id %>)">
+                            <i style="font-size: 25px;" class="fa fa-shopping-cart"></i>
+                            <p>į krepšelį</p>
+                        </button>
+                    
+                    
+                        <button class="remember">
+                            <p>Isiminti</p>
+                            <i style="font-size: 25px;" class="fa fa-heart last"></i>
+                        </button>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="more">
+            <div class="contents">
+            <h1>Prekes aprašymas</h1>
+        </div>
+        <div class="contents description">
+            <% if (!prekes[0].DESCRIPTION) { prekes[0].DESCRIPTION = "<ul style='text-align: center'><h1>Aprašymo nėra</h1></ul>"; } %>
+            <%- prekes[0].DESCRIPTION %>
+        </div>
+        
+        </div>
+    </article>
+    <footer>
+        <p>"MB Instalika"</p>
+    </footer>
+    <script>
+        const searchForm = document.getElementById('searchForm');
+        const searchInput = document.getElementById('searchInput');
+
+        searchForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+            const query = searchInput.value.trim();
+            if (query) {
+                window.location.href = `/search/${encodeURIComponent(query)}`;
+            }
+        });
+
+        function addToCart(productId) {
+        // Perform the same action as the form submission using JavaScript
+        // You can use AJAX to submit the data to the server
+        // Here's an example of how you can do it with fetch API
+        fetch(`/cart/add/${productId}`, {
+            method: 'POST'
+            // You can add headers and body if needed
+        }).then(response => {
+            // Handle the response as needed
+        }).catch(error => {
+            // Handle errors
+            console.error('Error:', error);
+        });
+    }
+    </script>
+</body>
+
+</html>

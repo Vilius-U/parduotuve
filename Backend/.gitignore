@@ -1,0 +1,24 @@
+# Node.js related
+node_modules/
+npm-debug.log
+
+# Built files
+/build/
+/dist/
+
+# Environment variables
+.env
+
+# Logs
+*.log
+
+# Dependency directories
+pids
+logs
+results
+
+# Optional: Editor specific files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace

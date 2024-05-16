@@ -1,0 +1,187 @@
+body {
+    margin:0;
+    padding:0;
+    width:100%;
+    font-family: 'Lato';
+    background-color: rgb(236, 236, 236);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  header .bgTop {
+    background-color: #2e2e2e;
+  }
+  header .bgBottom {
+    background-color: black;
+  }
+  
+  header .contacts{
+    margin: auto;
+    display: grid;
+    grid-template-columns: auto auto;
+    color: white;
+    text-align: center;
+    width: 1170px;
+  }
+  header .contacts div div {
+    transition: 0.3s;
+  }
+  header .contacts div div a {
+    transition: 0.3s;
+  }
+  header .contacts div div:hover {
+    background-color: white;
+  }
+  header .contacts div div:hover a {
+    color: #2e2e2e;
+  }
+  header .contacts .leftalign {
+    display: flex;
+  }
+  header .contacts .rightalign {
+    display: flex;
+    justify-content: right;
+  }
+  header .contacts .darkmode {
+    justify-content: right;
+    background-color: white;
+    color: black;
+    cursor: pointer;
+  }
+  header .contacts div i{
+    padding-block: 5px;
+    padding-inline: 15px;
+    border-left: 1px solid rgb(255, 255, 255, 0.1);
+    border-block: 1px solid rgb(255, 255, 255, 0.1);
+  }
+  header .contacts div .last {
+    border-right: 1px solid rgb(255, 255, 255, 0.1);
+  }
+  header .contacts .last i{
+    border-right: 1px solid rgb(255, 255, 255, 0.1);
+  }
+  header .contacts a {
+    text-decoration: none;
+    color: white;
+  }
+  header .head {
+    margin: auto;
+    background-color: black;
+    width: 1200px;
+    display: grid;
+    grid-template-columns: auto auto auto;
+  }
+  header .head .content {
+    display: flex;
+    align-items: center;
+    color: white;
+    gap: 30px;
+  }
+  header .head .content:nth-child(3){
+    justify-content: right;
+    padding-right: 50px;
+  }
+  header .head .content input {
+    border: 0px;
+    background-color: transparent;
+    color: white;
+  }
+  header .head .content .search {
+    scale: 120%;
+    padding: 3px;
+    border: 1px solid white;
+    border-radius: 4px 4px 4px 4px;
+  }
+  header .head .content .search i {
+    background-color: white;
+    color: black;
+    padding: 3px;
+    border-radius: 4px 4px 4px 4px;
+  }
+  header .head img {
+    width: 300px;
+  }
+  article {
+    padding-block: 20px;
+    width: 1200px;
+    margin: auto; 
+  }
+  article .top {
+    text-align: center;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    background-color: white;
+    border-radius: 15px 15px 0px 0px;
+  }
+  article .empty {
+    text-align: center;
+  }
+  article .continue {
+    border: 1px solid;
+    text-decoration: none;
+    padding: 10px;
+    color: rgb(21, 20, 20);
+    background-color: white;
+    border-radius: 20px;
+  }
+article .item {
+    display: flex;
+    justify-content: space-between;
+    margin: auto;
+    border-inline: 1px solid rgba(0, 0, 0, 0.3);
+    border-top: 1px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+    background-color: white;
+}
+article .item a {
+    color:#2e2e2e;
+}
+article .item .info {
+    display: flex;
+    align-items: center;
+}
+article .item .info2 {
+    flex-direction: column;
+    align-items: baseline;
+    justify-content: left;
+    padding: 5px;
+    width: 100%;
+}
+article .item .info3 {
+    padding-right: 20px;
+    gap: 10px;
+}
+
+article .item .info3 button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    color: red;
+    padding: 15px;
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+    border-radius: 10px;
+    border: 1px solid;
+    cursor: pointer;
+    transition: 0.3s;
+}
+article .item .info3 button:hover {
+    background-color: red;
+    color: white;
+}
+article .item .info img {
+    aspect-ratio: 1 / 1;
+    width: 150px;
+    object-fit: contain;
+}
+
+
+
+  footer {
+    display: flex;
+    justify-content: center;
+    background-color: black;
+    color: white;
+    height: 10vh;
+  }

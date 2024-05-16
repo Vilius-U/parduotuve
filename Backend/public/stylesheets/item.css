@@ -1,0 +1,291 @@
+body {
+    margin:0;
+    padding:0;
+    width:100%;
+    font-family: 'Lato';
+    background-color: rgb(236, 236, 236);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  header .bgTop {
+    background-color: #2e2e2e;
+  }
+  header .bgBottom {
+    background-color: black;
+  }
+  
+  header .contacts{
+    margin: auto;
+    display: grid;
+    grid-template-columns: auto auto;
+    color: white;
+    text-align: center;
+    width: 1170px;
+  }
+  header .contacts div div {
+    transition: 0.3s;
+  }
+  header .contacts div div a {
+    transition: 0.3s;
+  }
+  header .contacts div div:hover {
+    background-color: white;
+  }
+  header .contacts div div:hover a {
+    color: #2e2e2e;
+  }
+  header .contacts .leftalign {
+    display: flex;
+  }
+  header .contacts .rightalign {
+    display: flex;
+    justify-content: right;
+  }
+  header .contacts .darkmode {
+    justify-content: right;
+    background-color: white;
+    color: black;
+    cursor: pointer;
+  }
+  header .contacts div i{
+    padding-block: 5px;
+    padding-inline: 15px;
+    border-left: 1px solid rgb(255, 255, 255, 0.1);
+    border-block: 1px solid rgb(255, 255, 255, 0.1);
+  }
+  header .contacts div .last {
+    border-right: 1px solid rgb(255, 255, 255, 0.1);
+  }
+  header .contacts .last i{
+    border-right: 1px solid rgb(255, 255, 255, 0.1);
+  }
+  header .contacts a {
+    text-decoration: none;
+    color: white;
+  }
+  header .head {
+    margin: auto;
+    background-color: black;
+    width: 1200px;
+    display: grid;
+    grid-template-columns: auto auto auto;
+  }
+  header .head .content {
+    display: flex;
+    align-items: center;
+    color: white;
+    gap: 30px;
+  }
+  header .head .content:nth-child(3){
+    justify-content: right;
+    padding-right: 50px;
+  }
+  header .head .content input {
+    border: 0px;
+    background-color: transparent;
+    color: white;
+  }
+  header .head .content .search {
+    scale: 120%;
+    padding: 3px;
+    border: 1px solid white;
+    border-radius: 4px 4px 4px 4px;
+  }
+  header .head .content .search i {
+    background-color: white;
+    color: black;
+    padding: 3px;
+    border-radius: 4px 4px 4px 4px;
+  }
+  header .head img {
+    width: 300px;
+  }
+  article {
+    margin: auto;
+    width: 1200px;
+  } 
+  article .main h1 {
+    text-align: center;
+  }
+  .main {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    background-color: white;
+    padding-block: 20px;
+  }
+  .main .info {
+    border-bottom: 1px solid rgb(103, 103, 103, 0.5);
+    width: 90%;
+    margin: auto;
+  }
+  .main .maininfo {
+    width: 35%;
+    position: relative;
+    padding-inline: 20px;
+  }
+  .main .image{
+    width: 700px;
+    aspect-ratio: 1 / 1;
+  }
+  .main .image img{
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+    border: 1px solid rgb(103, 103, 103, 0.5);
+  }
+  .main .amount {
+    padding-bottom: 80px;
+    width: 90%;
+    margin: auto;
+  }
+  .buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    width: 400px;
+    position: absolute;
+    bottom: 0;
+  }
+  button {
+    transition: 0.3s;
+  }
+  .shopping {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    background-color: rgb(244, 35, 35);
+    border: 0px;
+    border-radius: 50px 50px 50px 50px;
+    padding: 3px;
+    width: 100%;
+    margin: auto;
+    cursor: pointer;
+    transition: 0.1s;
+    margin-top: auto;
+    margin-bottom: 5px;
+    transition: width 0.3s;
+  }
+button i{
+    display: flex;
+    text-align: center;
+    align-content: center;
+    align-items: center;
+    background-color: white;
+    color: rgb(244, 35, 35);
+    padding: 15px;
+    border-radius: 500px;
+  }
+  button p{
+    display: inline;
+    margin: auto;
+    color: white;
+    font-weight: 900;
+    text-align: center;
+    padding-left: 0px;
+    font-size: 18px;
+    width: 80%;
+  }
+  button p {
+    padding-left: 10px;
+  }
+  
+  .remember {
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    text-align: right;
+    cursor: pointer;
+    background-color: rgb(244, 35, 35);
+    border-radius: 50px 50px 50px 50px;
+    padding: 3px;
+    width: 15%;
+    transition: 0.3s;
+    margin-bottom: 5px;
+    border: 0px;
+  }
+  .remember p {
+    opacity: 0;
+    width: 0%;
+    position: absolute;
+    right: 1800px;
+    color: rgb(236, 236, 236);
+  }
+  .remember i {
+    position: relative;
+    left: 0.5px;
+    transition: 0.3s;
+  }
+  .remember:hover{
+    width: 90%;
+  }
+  .remember:hover p {
+    opacity: 1;
+    position: relative;
+    right: 20px;
+    color: white;
+  }
+
+
+
+
+
+
+  .more {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    background-color: white;
+  }
+  .more .contents {
+    border: 1px solid rgb(103, 103, 103, 0.5);
+  }
+  .more .contents:first-child {
+    padding-left: 30px;
+    border-bottom: 0px;
+  }
+  .more ul {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    padding-inline: 25px;
+    padding-block: 10px;
+    width: 90%;
+    list-style-type: none;
+    border: 1px solid rgb(103, 103, 103, 0.5);
+  }
+  .more ul li:nth-child(1) {
+    font-weight: bold;
+    padding: 5px;
+    font-size: 20px;
+}
+  .more ul li:nth-child(2n) {
+    background-color: rgb(103, 103, 103, 0.2);
+}
+.more tr:nth-child(2n) {
+  background-color: rgb(103, 103, 103, 0.2);
+}
+.more td {
+  padding: 5px;
+}
+.more span {
+  padding-inline: 7px;
+  scale: 110%;
+}
+.more table {
+  width: 100%;
+  margin: auto;
+}
+
+
+
+  footer {
+    display: flex;
+    justify-content: center;
+    background-color: black;
+    color: white;
+    height: 10vh;
+  }
