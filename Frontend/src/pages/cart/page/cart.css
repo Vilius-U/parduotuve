@@ -1,0 +1,193 @@
+.App-header .cart {
+    position: relative;
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+}
+.mainCart {
+    min-height: 80vh;
+}
+.App-header .cartItems {
+    position: relative;
+    margin-right: auto;
+    border: 1px solid rgb(0, 0, 0, 0.2);
+    border-radius: 15px;
+    padding: 15px;
+}
+
+.App-header .cartItems .heading {
+    margin: auto;
+    text-align: center;
+    width: 350px;
+    padding-block: 5px;
+    border-bottom: 1px solid;
+}
+
+.App-header .cartItems .cartItem {
+    display: flex;
+    width: 700px;
+    border-bottom: 1px solid;
+}
+
+.App-header .cartItems .last {
+    border-bottom: 0px;
+}
+
+.App-header .cartItems .cartItem .cartImage {
+    display: flex;
+    width: 210px;
+    height: 150px;
+}
+
+.App-header .cartItems .cartItem .cartImage a {
+    display: flex;
+    width: 100%;
+}
+
+.App-header .cartItems .cartItem .cartImage img {
+    max-width: 200px;
+    max-height: 140px;
+}
+
+.App-header .cartItems .cartItem .cartTitle {
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+}
+
+.App-header .cartItems .cartItem .cartTitle a {
+    color: rgb(53, 53, 53);
+}
+
+.App-header .cartItems .cartItem .cartTitle button {
+    width: 80px;
+    border: 0px;
+    color: rgb(48, 48, 255);
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.App-header .cartItems .cartItem .cartTitle button:hover {
+    text-decoration: underline;
+}
+
+.App-header .cartItems .cartItem .cartRight {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+}
+
+.App-header .cartItems .cartItem .cartRight button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    width: 30px;
+    border: 2px solid;
+    border-radius: 5px;
+    color: red;
+    background-color: transparent;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.App-header .cartItems .cartItem .cartRight button:hover {
+    background-color: red;
+    border-color: red;
+    color: white;
+}
+
+.App-header .cartItems .cartItem .cartRight button .trash {
+    font-size: 18px;
+}
+
+.App-header .cart .cartSummary {
+    position: fixed;
+    width: 300px;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-left: 850px;
+    /*half the width*/
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid;
+    border-radius: 15px;
+    padding: 15px;
+    z-index: 1;
+}
+.App-header .cart .cartSummary h1 {
+    width: 70%;
+    margin: 0;
+    margin-inline: auto;
+    text-align: center;
+    border-bottom: 1px solid rgb(0, 0, 0, 0.5);
+}
+.cartSummary .cartTotal {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 70px;
+    gap: 5px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.cartSummary .cartTotal:last-of-type {
+    border-bottom: none;
+}
+
+.App-header .cartSummary .cartTotal h2 {
+    margin: 0;
+}
+/* .App-header .cartSummary button {
+    margin-top: auto;
+    margin-inline: auto;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 5px;
+    width: 200px;
+} */
+.cartSummary .button {
+        display: flex;
+    justify-content: center;
+    width: 100%;
+}
+.cartSummary .button p {
+    width: 40%;
+    text-align: left;
+}
+.cartSummary .cartIconStyle {
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    height: 30px;
+    width: 40%;
+}
+.cartSummary .cartIcon {
+    display: flex;
+    font-size: 22px;
+}
+
+.cartSummary .button button {
+    border: 2px solid red;
+    border-radius: 15px;
+    background-color: transparent;
+    height: 40px;
+    width: 100%;
+    padding: 0;
+    padding-inline: 5px;
+    display: flex;
+    color: red;
+    align-items: center;
+    cursor: pointer;
+    justify-content: space-around;
+    transition: 0.3s ease-in-out;
+}
+.cartSummary .button button:hover {
+    background-color: red;
+    color: white;
+}

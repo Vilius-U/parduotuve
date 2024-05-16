@@ -1,0 +1,226 @@
+main .itemMain {
+    display: flex;
+}
+main .image {
+    display: flex;
+    border: 1px solid;
+    width: 500px;
+    height: 500px;
+}
+main img {
+    max-width: 500px;
+    max-height: 500px;
+    object-fit: contain;
+    margin: auto;
+}
+main .information{
+    display: flex;
+    flex-direction: column;
+    padding-inline: 10px;
+    width: 600px;
+    border: 1px solid;
+    margin-left: auto;
+}
+main .information .shortDescription {
+    border-block: 1px solid rgb(0, 0, 0, 0.5);
+}
+main .information .inStock {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: limegreen;
+}
+ .information .button {
+    margin-top: auto;
+    margin-inline: auto;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 5px;
+    width: 300px;
+}
+ .information .cartIconStyle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    width: 30px;
+}
+ .information .cartIcon {
+    font-size: 22px;
+}
+
+ .information .button button {
+    border: 2px solid red;
+    background-color: transparent;
+    height: 40px;
+    width: 70%;
+    padding: 0;
+    padding-inline: 5px;
+    display: flex;
+    color: red;
+    align-items: center;
+    cursor: pointer;
+    justify-content: space-around;
+    transition: 0.3s;
+}
+ .information .button button:hover {
+    background-color: red;
+    color: white;
+}
+main .descriptionElements {
+    padding-top: 15px;
+}
+main .descriptionElements h1{
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    gap: 10px;
+    margin: 0;
+    border: 1px solid;
+    padding: 0;
+    transition: 0.3s;
+}
+main .descriptionElements h1:hover {
+    background-color: rgb(0, 0, 0, 0.1);
+}
+main .descriptionElements h1 .arrowDown {
+    transition: 0.3s ease-in-out;
+}
+main .descriptionElements .btn:checked + label h1 .arrowDown {
+    rotate: 180deg;
+}
+main .descriptionElements input {
+    display: none;
+}
+main .descriptionElements .description {
+    transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out; /* Add opacity transition */
+    max-height: 10000px; /* Set initial max-height */
+    overflow: hidden; /* Hide overflow content */
+}
+main .descriptionElements .btn:checked ~ .description{
+    opacity: 0;
+    max-height: 0; /* Set final max-height */
+}
+main .description tbody tr:nth-child(even) {
+    background-color: rgb(0, 0, 0, 0.2);
+}
+main .description table {
+    width: 100% !important;
+}
+main .description tbody tr {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+main .description tbody tr td {
+    padding: 5px;
+}
+main .description tbody tr td:nth-child(1) {
+    border-right: 1px solid;
+    width: 20%;
+}
+main .description tbody tr td:nth-child(2) {
+    width: 80%;
+}
+main .description tbody tr td[colspan="2"] {
+    background-color: white;
+    border-right: 0;
+    width: 100%;
+    text-align: center;
+    border-block: 1px solid;
+    font-weight: bold;
+    padding-block: 10px;
+}
+main .description hr {
+    display: none;
+}
+main .description ul {
+    list-style: none;
+    padding: 0;
+}
+main .description ul li {
+    padding: 5px;
+}
+main .description ul li:nth-child(odd) {
+    background-color: rgb(0, 0, 0, 0.2);
+}
+
+
+main .description .tech-specs-items-description{
+    list-style: none;
+    padding: 0;
+    border: 1px solid rgb(0, 0, 0, 0.5);
+}
+
+main .description .tech-specs-items-description .tech-specs-items-description-list {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+main .description .tech-specs-items-description .tech-specs-items-description-list .tech-specs-items-description__title {
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    width: 20% !important;
+    border-right: 1px solid rgb(0, 0, 0, 0.5);
+}
+main .description .tech-specs-items-description .tech-specs-items-description-list .tech-specs-items-description__title-details {
+    padding: 5px;
+    width: 80%
+}
+main .description .tech-specs-items-description .tech-specs-items-description-list:nth-child(odd) {
+    background-color: rgb(0, 0, 0, 0.2);
+}
+main .description .tech-specs-items-description .tech-specs-items-description-list:nth-child(1) {
+    background-color: transparent;
+    font-weight: bold;
+    border-bottom: 1px solid rgb(0, 0, 0, 0.5);
+    padding: 10px;
+    padding-left: 50px;
+}
+main .description .wpsm-thead-default .td-head th{
+    padding: 25px;
+    border-bottom: 1px solid rgb(0, 0, 0, 0.5);
+}
+main .description .wpsm-tbody {
+    border: 1px solid rgb(0, 0, 0, 0.5);
+}
+main .description .wpsm-tbody tr td:first-child{
+    width: 20%; 
+}
+main .description .wpsm-tbody tr td:nth-child(2) {
+    width: 80%;
+}
+main .description .wpsm-tbody .td-head {
+    text-align: center;
+}
+main .description .wpsm-tbody .td-head td:first-child {
+    border-block: 1px solid;
+    border-right: 0;
+    padding: 15px;
+    width: 100%;
+    background-color: white;
+}
+main .description .parameters {
+    margin: auto;
+    width: 100% !important;
+}
+main .description .parameters .head {
+    border-bottom: 1px solid rgb(0, 0, 0, 0.5);
+    text-align: center;
+}
+main .description .parameters .head .right-cell {
+    margin: auto;
+}
+main .description .parameters tr td{
+    border: 0;
+}
+main .description .parameters tr td:first-child{
+border-right: 1px solid;
+width: 20%;
+}
+main .description .mb-4 p iframe {
+    display: block; /* Ensure iframe behaves like a block element */
+    margin: 0 auto;
+}

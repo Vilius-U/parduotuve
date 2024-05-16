@@ -1,0 +1,731 @@
+main {
+    width: 1280px;
+    padding-block: 10px;
+    margin: auto;
+}
+
+.Category-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.Category-header .filters {
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    border: 1px solid rgb(0, 0, 0, 0.3);
+    width: 16%;
+    height: 100%;
+}
+.Category-header .filters .heading {
+    display: flex;
+    justify-content: center;
+    color: #444444;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+    border-bottom: 1px solid rgb(0, 0, 0, 0.3);
+}
+.Category-header .filters .filter {
+    border-bottom: 1px solid rgb(0, 0, 0, 0.3);
+    padding-block: 15px;
+}
+.Category-header .filters .filter:last-child {
+    border-bottom: 0px;
+}
+.Category-header .filters .filter p{
+margin: 0;
+}
+.Category-header .filters .filter .label {
+    padding-left: 10px;
+    padding-bottom: 15px;
+    color: #444444;
+    font-size: large;
+}
+.Category-header .filters .container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.Category-header .filters .container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding-left: 35px;
+    height: 15px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.Category-header .filters .container label {
+    width: 100%;
+    cursor: pointer;
+}
+.Category-header .filters .container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+.Category-header .filters .container .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 15px;
+    width: 15px;
+    background-color: #ffffff;
+    outline: 1px solid;
+    border-radius: 5px;
+    transition: 0.3s;
+  }
+  .Category-header .filters .container:hover input ~ .checkmark {
+    background-color: #ccc;
+  }
+  .Category-header .filters .container input:checked ~ .checkmark {
+    background-color: rgb(225, 27, 27);
+  }
+  .Category-header .filters .container .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+    transition: 0.3s;
+  }
+  .Category-header .filters .container input:checked ~ .checkmark:after {
+    display: block;
+  }
+  .Category-header .filters .container .checkmark:after {
+    left: 3.5px;
+    top: 3px;
+    width: 6px; 
+    height: 5px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+    transition: 0.3s;
+  }
+
+
+
+
+.Category-header .filters .slider {
+    display: flex;
+    justify-content: center;
+    background-color: red;
+}
+.Category-header .filters .priceRange {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.Category-header .filters .priceRange p {
+    margin: 0;
+}
+.Category-header .filters .priceRange .values {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+.Category-header .filters .priceRange .valueRange {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+.Category-header .filters .priceRange .values .value {
+    width: 60%;
+    border: 1px solid rgb(0, 0, 0, 0.3);
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.Category-header .items {
+    width: 80%;
+}
+
+.Category-header .items h1 {
+    margin: 0;
+    padding: 5px;
+    padding-left: 100px;
+    background-color: rgb(208, 208, 208);
+}
+
+.Category-header .items .first {
+    border-radius: 0px 15px 0px 0px;
+}
+
+.Category-header .items .content {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto auto auto;
+}
+
+.Category-header .items .cursor {
+    pointer-events: none;
+    filter: blur(1px);
+}
+
+.Category-header .item {
+    width: 100%;
+    height: 200px;
+    display: flex;
+    position: relative;
+    outline: 1px solid rgb(0, 0, 0, 0.3);
+    background-color: white;
+    z-index: 0;
+    transition: 0.1s;
+}
+
+.Category-header .item:hover {
+    scale: 101%;
+    box-shadow: 0 0 10px rgb(0, 0, 0);
+    outline: 1px solid rgb(0, 0, 0, 0.3);
+    z-index: 4;
+}
+
+.Category-header .items .loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    animation: pulse 0.5s infinite alternate;
+}
+
+.loading-spinner {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    /* Light grey */
+    border-top: 4px solid #3498db;
+    /* Blue */
+    border-radius: 50%;
+    animation: spin 1s ease-in-out infinite;
+    /* Apply animation */
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    /* Start with normal height */
+    100% {
+        transform: rotate(360deg);
+    }
+
+    /* Return to normal height */
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.5;
+        /* Initial brightness */
+    }
+
+    100% {
+        opacity: 1;
+        /* Final brightness */
+    }
+}
+
+.Category-header .item .label {
+    display: flex;
+    z-index: 0;
+    align-items: center;
+    position: absolute;
+    top: 10px;
+    height: 30px;
+    background-color: rgb(27, 225, 27);
+    border-radius: 0px 15px 15px 0px;
+    transition: 0.1s ease-in-out;
+}
+
+.Category-header .item .label .label-icon {
+    padding-left: 5px;
+    padding-right: 10px;
+}
+
+.Category-header .item .label p {
+    position: relative;
+    white-space: nowrap;
+    opacity: 0;
+    width: 0px;
+    transition: 0.2s;
+    letter-spacing: -7px;
+    right: 15px;
+}
+
+.Category-header .item .label:hover p {
+    opacity: 1;
+    width: 120px;
+    letter-spacing: 0px;
+    right: 0px;
+}
+
+.Category-header .item .photo {
+    width: 30%;
+}
+
+.Category-header .item .photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.Category-header .item .info h2 {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    text-align: left;
+    font-size: 15px;
+}
+
+.Category-header .item .info {
+    display: flex;
+    flex-direction: column;
+    padding-inline: 5px;
+    width: 70%;
+    height: 200px;
+}
+
+.Category-header .item .info .description {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 15px;
+    white-space: nowrap;
+    max-width: 100%;
+    scrollbar-width: none;
+    overflow-x: auto;
+}
+
+.Category-header .item .info p {
+    padding-inline: 10px;
+}
+
+.Category-header .item .info h2 {
+    padding-block: 5px;
+}
+
+.Category-header .item .info h2 a {
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+}
+
+.Category-header .item .info h2 a:hover {
+    text-decoration: underline;
+    color: rgb(0, 0, 0);
+}
+
+.decimal {
+    font-size: 13px;
+    vertical-align: text-top;
+    /* Adjust the vertical alignment */
+}
+
+.Category-header .item .button {
+    margin-top: auto;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 5px;
+    width: 100%;
+}
+
+.Category-header .item .cartIconStyle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    width: 30px;
+}
+
+.Category-header .item .cartIcon {
+    font-size: 22px;
+}
+
+.Category-header .item .button button {
+    border: 2px solid red;
+    background-color: transparent;
+    height: 40px;
+    width: 70%;
+    padding: 0;
+    padding-inline: 5px;
+    display: flex;
+    color: red;
+    align-items: center;
+    cursor: pointer;
+    justify-content: space-around;
+    transition: 0.3s ease-in-out;
+}
+
+.Category-header .item .button button:hover {
+    background-color: red;
+    color: white;
+}
+
+
+
+/* Functional styling;
+ * These styles are required for noUiSlider to function.
+ * You don't need to change these rules to apply your design.
+ */
+.noUi-target,
+.noUi-target * {
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-user-select: none;
+    -ms-touch-action: none;
+    touch-action: none;
+    -ms-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.noUi-target {
+    position: relative;
+}
+
+.noUi-base,
+.noUi-connects {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 1;
+}
+
+/* Wrapper for all connect elements.
+  */
+.noUi-connects {
+    overflow: hidden;
+    z-index: 0;
+}
+
+.noUi-connect,
+.noUi-origin {
+    will-change: transform;
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    -ms-transform-origin: 0 0;
+    -webkit-transform-origin: 0 0;
+    -webkit-transform-style: preserve-3d;
+    transform-origin: 0 0;
+    transform-style: flat;
+}
+
+Offset direction .noUi-txt-dir-rtl.noUi-horizontal .noUi-origin {
+    left: 0;
+    right: auto;
+}
+
+/* Give origins 0 height/width so they don't interfere with clicking the
+  * connect elements. */
+
+.noUi-vertical .noUi-origin {
+    top: -100%;
+    width: 0;
+}
+
+.noUi-horizontal .noUi-origin {
+    height: 0;
+}
+
+.noUi-handle {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    position: absolute;
+    transition: 0.2s;
+}
+
+.noUi-touch-area {
+    height: 10px;
+    width: 10px;
+}
+
+.noUi-state-tap .noUi-connect,
+.noUi-state-tap .noUi-origin {
+    -webkit-transition: transform 0.3s ease-out;
+    transition: transform 0.3s ease-out;
+}
+
+.noUi-state-drag * {
+    cursor: inherit !important;
+}
+
+/* Slider size and handle placement;
+  */
+.noUi-horizontal {
+    height: 10px;
+}
+
+.noUi-horizontal .noUi-handle {
+    width: 15px;
+    height: 15px;
+    right: -5px;
+    top: -3px;
+    border-radius: 5px;
+}
+
+.noUi-vertical {
+    width: 18px;
+}
+
+.noUi-vertical .noUi-handle {
+    width: 28px;
+    height: 34px;
+    right: -6px;
+    bottom: -17px;
+    transition: 0.3s;
+}
+
+.noUi-txt-dir-rtl.noUi-horizontal .noUi-handle {
+    left: -17px;
+    right: auto;
+}
+
+/* Styling;
+  * Giving the connect element a border radius causes issues with using transform: scale
+  */
+.noUi-target {
+    background: #FAFAFA;
+    border-radius: 100px;
+    border: 1px solid #D3D3D3;
+    box-shadow: inset 0 1px 1px #F0F0F0, 0 3px 6px -5px #BBB;
+    transition: 0.3s;
+}
+
+.noUi-connect {
+    background: red;
+}
+
+/* Handles and cursors;
+  */
+.noUi-draggable {
+    cursor: ew-resize;
+}
+
+.noUi-vertical .noUi-draggable {
+    cursor: ns-resize;
+}
+
+.noUi-handle {
+    background-color: rgb(198, 0, 0);
+    scale: 1.15;
+    cursor: pointer;
+}
+
+.noUi-active {
+    box-shadow: 0 0 5px rgb(198, 0, 0);
+    scale: 1.25;
+}
+
+/* Handle stripes;
+  */
+.noUi-handle:before,
+.noUi-handle:after {
+    content: "";
+    display: block;
+    position: absolute;
+    height: 4px;
+    width: 1px;
+    background: #E8E7E6;
+    left: 8px;
+    top: 6px;
+}
+
+.noUi-handle:after {
+    left: 6px;
+}
+
+.noUi-vertical .noUi-handle:before,
+.noUi-vertical .noUi-handle:after {
+    width: 1px;
+    height: 1px;
+    left: 6px;
+    top: 14px;
+}
+
+.noUi-vertical .noUi-handle:after {
+    top: 17px;
+}
+
+/* Disabled state;
+  */
+[disabled] .noUi-connect {
+    background: #B8B8B8;
+}
+
+[disabled].noUi-target,
+[disabled].noUi-handle,
+[disabled] .noUi-handle {
+    cursor: not-allowed;
+}
+
+/* Base;
+  *
+  */
+.noUi-pips,
+.noUi-pips * {
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.noUi-pips {
+    position: absolute;
+    color: #999;
+}
+
+/* Values;
+  *
+  */
+.noUi-value {
+    position: absolute;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.noUi-value-sub {
+    color: #ccc;
+    font-size: 10px;
+}
+
+/* Markings;
+  *
+  */
+.noUi-marker {
+    position: absolute;
+    background: #CCC;
+}
+
+.noUi-marker-sub {
+    background: #AAA;
+}
+
+.noUi-marker-large {
+    background: #AAA;
+}
+
+/* Horizontal layout;
+  *
+  */
+.noUi-pips-horizontal {
+    padding: 10px 0;
+    height: 80px;
+    top: 100%;
+    left: 0;
+    width: 100%;
+}
+
+.noUi-value-horizontal {
+    -webkit-transform: translate(-50%, 50%);
+    transform: translate(-50%, 50%);
+}
+
+.noUi-rtl .noUi-value-horizontal {
+    -webkit-transform: translate(50%, 50%);
+    transform: translate(50%, 50%);
+}
+
+.noUi-marker-horizontal.noUi-marker {
+    margin-left: -1px;
+    width: 2px;
+    height: 5px;
+}
+
+.noUi-marker-horizontal.noUi-marker-sub {
+    height: 10px;
+}
+
+.noUi-marker-horizontal.noUi-marker-large {
+    height: 15px;
+}
+
+/* Vertical layout;
+  *
+  */
+.noUi-pips-vertical {
+    padding: 0 10px;
+    height: 100%;
+    top: 0;
+    left: 100%;
+}
+
+.noUi-value-vertical {
+    -webkit-transform: translate(0, -50%);
+    transform: translate(0, -50%);
+    padding-left: 25px;
+}
+
+.noUi-rtl .noUi-value-vertical {
+    -webkit-transform: translate(0, 50%);
+    transform: translate(0, 50%);
+}
+
+.noUi-marker-vertical.noUi-marker {
+    width: 5px;
+    height: 2px;
+    margin-top: -1px;
+}
+
+.noUi-marker-vertical.noUi-marker-sub {
+    width: 10px;
+}
+
+.noUi-marker-vertical.noUi-marker-large {
+    width: 15px;
+}
+
+.noUi-tooltip {
+    display: block;
+    position: absolute;
+    border: 1px solid #D9D9D9;
+    border-radius: 3px;
+    background: #fff;
+    color: #000;
+    padding: 5px;
+    text-align: center;
+    white-space: nowrap;
+    display: none;
+}
+
+.noUi-horizontal .noUi-tooltip {
+    -webkit-transform: translate(-50%, 0);
+    transform: translate(-50%, 0);
+    left: 50%;
+    bottom: 120%;
+}
+
+.noUi-vertical .noUi-tooltip {
+    -webkit-transform: translate(0, -50%);
+    transform: translate(0, -50%);
+    top: 50%;
+    right: 120%;
+}
+
+.noUi-horizontal .noUi-origin>.noUi-tooltip {
+    -webkit-transform: translate(50%, 0);
+    transform: translate(50%, 0);
+    left: auto;
+    bottom: 10px;
+}
+
+.noUi-vertical .noUi-origin>.noUi-tooltip {
+    -webkit-transform: translate(0, -18px);
+    transform: translate(0, -18px);
+    top: auto;
+    right: 28px;
+}

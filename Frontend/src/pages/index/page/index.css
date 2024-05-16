@@ -1,0 +1,271 @@
+main {
+    width: 1280px;
+    padding-block: 10px;
+    margin: auto;
+}
+.App-header {
+
+    display: flex;
+}
+.App-header .filters {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background-color: rgb(208, 208, 208);
+    width: 15%;
+    height: 100%;
+    border-radius: 15px 0px 0px 0px;
+}
+.App-header .filters h1 {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background-color: rgb(66, 62, 62);
+    color: white;
+    border-radius: 15px 0px 0px 0px;
+    padding: 5px;
+    text-align: center;
+}
+.App-header .filters .categories{
+    background-color: rgb(208, 208, 208);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.App-header .filters .categories .category-loading {
+    display: flex;
+    justify-content: left;
+    gap: 10px;
+    padding-block: 10px;
+    padding-left: 15px;
+    width: 100%;
+}
+.App-header .filters .categories .category-loading .loading-category {
+    background-color: rgb(64, 64, 64);
+    width: 140px;
+    height: 15px;
+    border-radius: 5px;
+    animation: flash 2s infinite alternate;
+}
+@keyframes flash {
+    0% {
+        filter: brightness(100%);
+    }
+    50% {
+        filter: brightness(200%);
+    }
+    100% {
+        filter: brightness(100%);
+    }
+}
+.App-header .filters .categories .category {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding-block: 5px;
+    border-bottom: 1px solid rgb(0, 0, 0, 0.3);
+    border-inline: 1px solid rgb(0, 0, 0, 0.3);
+    transition: 0.3s;
+}
+.App-header .filters .categories .category:hover {
+    box-shadow: -5px 0px 0px 0px black;
+    .arrow{
+        rotate: 0deg;
+    }
+}
+.App-header .filters .categories .category a {
+    padding-left: 10px;
+    text-decoration: none;
+    color: rgb(55, 54, 54);
+}
+.App-header .filters .categories .category a:hover {
+    text-decoration: underline;
+}
+
+.App-header .filters .categories .category .arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    rotate: 180deg;
+    transition: 0.3s;
+}
+.App-header .items {
+    width: 85%;
+}
+.App-header .items h1{
+    margin: 0;
+    padding: 5px;
+    padding-left: 100px;
+    background-color: rgb(208, 208, 208);
+}
+.App-header .items .first{
+    border-radius: 0px 15px 0px 0px;
+}
+.App-header .items .content{
+    display: flex;
+    position: relative;
+}
+.App-header .items .cursor {
+    pointer-events: none;
+    filter: blur(1px);
+}
+.App-header .item {
+    width: 33.3%;
+    height: 200px;
+    display: flex;
+    outline: 1px solid rgb(0, 0, 0, 0.3);
+    background-color: white;
+    z-index: 1;
+    transition: 0.1s;
+    z-index: 1;
+}
+.App-header .item:hover {
+    scale: 101%;
+    box-shadow: 0 0 10px rgb(0, 0, 0);
+    outline: 1px solid rgb(0, 0, 0, 0.3);
+    z-index: 4;
+}
+.App-header .items .loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    animation: pulse 0.5s infinite alternate;
+}
+.loading-spinner {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3; /* Light grey */
+    border-top: 4px solid #3498db; /* Blue */
+    border-radius: 50%;
+    animation: spin 1s ease-in-out infinite; /* Apply animation */
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); } /* Start with normal height */
+    100% { transform: rotate(360deg); } /* Return to normal height */
+  }
+@keyframes pulse {
+    0% {
+      opacity: 0.5; /* Initial brightness */
+    }
+    100% {
+      opacity: 1; /* Final brightness */
+    }
+  }
+.App-header .item .label {
+    display: flex;
+    z-index: 0;
+    align-items: center;
+    position: absolute;
+    top: 10px;
+    height: 30px;
+    background-color: rgb(27, 225, 27);
+    border-radius: 0px 15px 15px 0px;
+    transition: 0.1s ease-in-out;
+}
+.App-header .item .label .label-icon {
+    padding-left: 5px;
+    padding-right: 10px;
+}
+.App-header .item .label p {
+    position: relative;
+    white-space: nowrap;
+    opacity: 0;
+    width: 0px;
+    transition: 0.2s;
+    letter-spacing: -7px;
+    right: 15px;
+}
+.App-header .item .label:hover p {
+    opacity: 1;
+    width: 120px;
+    letter-spacing: 0px;
+    right: 0px;
+}
+.App-header .item .photo {
+    width: 30%;
+}
+.App-header .item .photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+.App-header .item .info h2{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    text-align: left;
+    font-size: 15px;
+}
+.App-header .item .info {
+    display: flex;
+    flex-direction: column;
+    padding-inline: 5px;
+    width: 70%;
+    height: 200px;
+}
+.App-header .item .info .description {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 15px;
+}
+.App-header .item .info p{
+    padding-inline: 10px;
+}
+.App-header .item .info h2{
+    padding-block: 5px;
+}
+.App-header .item .info h2 a {
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+}
+.App-header .item .info h2 a:hover {
+    text-decoration: underline;
+    color: rgb(0, 0, 0);
+}
+.decimal {
+    font-size: 13px;
+    vertical-align: text-top; /* Adjust the vertical alignment */}
+.App-header .item .button {
+    margin-top: auto;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 5px;
+    width: 100%;
+}
+.App-header .item .cartIconStyle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    width: 30px;
+}
+.App-header .item .cartIcon {
+    font-size: 22px;
+}
+
+.App-header .item .button button {
+    border: 2px solid red;
+    background-color: transparent;
+    height: 40px;
+    width: 70%;
+    padding: 0;
+    padding-inline: 5px;
+    display: flex;
+    color: red;
+    align-items: center;
+    cursor: pointer;
+    justify-content: space-around;
+    transition: 0.3s ease-in-out;
+}
+.App-header .item .button button:hover {
+    background-color: red;
+    color: white;
+}
