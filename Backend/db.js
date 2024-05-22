@@ -12,6 +12,18 @@ const connection = mysql.createConnection({
     multipleStatements: true
 });
 
+const query = (sql, values) => {
+    return new Promise((resolve, reject) => {
+      connection.query(sql, values, (error, results, fields) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(results);
+        }
+      });
+    });
+};
+
 connection.connect((err) => {
     if (err) {
         console.error('Error connecting to MySQL:', err);
@@ -96,4 +108,4 @@ connection.connect((err) => {
 //     timezone: 'Europe/Vilnius' // Adjust timezone as per your location
 // });
 
-module.exports = connection;
+module.exports = { connection, query };

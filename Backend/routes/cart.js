@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
-var connection = require('../db'); // Assuming db.js is located in the parent directory
+const {
+  connection,
+  query
+} = require('../db');
 var Paysera = require('paysera-nodejs');
 const axios = require('axios');
 const crypto = require('crypto');
@@ -25,12 +28,19 @@ const corsOptions = {
 
 router.use('/api/paysera', payseraProxy);
 router.use(cors(corsOptions));
+
 router.use(session({
-  resave: false, // set resave to false
-  saveUninitialized: true, // set saveUninitialized to true or false based on your requirement
-  secret: 'your-secret-key',
-  secure: false,
-  sameSite: 'none', // provide a secret key for session encryption
+  // secret: 'snerionag1r6hbn8', // Change this to a random string
+  // cookie: {
+  //   secure: true,
+  //   maxAge: 3600000
+  // },
+  // proxy: true,
+  // resave: false, // set resave to false
+  // saveUninitialized: true, // set saveUninitialized to true or false based on your requirement
+  // secret: 'your-secret-key',
+  // secure: true,
+  // sameSite: 'none', // provide a secret key for session encryption
   // other options...
 }));
 
@@ -55,7 +65,7 @@ router.post('/add', (req, res) => {
       error: 'Invalid product ID'
     });
   }
-  
+
   req.session.cart = req.session.cart || [];
   if (!req.session.cart.includes(productId)) {
     req.session.cart.push(productId);
@@ -83,19 +93,32 @@ router.post('/add', (req, res) => {
 
 
 router.post('/remove', (req, res) => {
+
+  console.log(req.body);
+
   try {
 
+
+    if (isNaN(req.body.itemId)) {
+      return res.status(400).json({
+        error: 'Invalid product ID'
+      })
+    }
     const itemId = req.body.itemId;
-    
+
+
+
     if (!isNaN(itemId)) {
       if (!req.session.cart) {
         // If req.session.cart is undefined, return an empty cart
-        return res.json({ cart: [] });
+        return res.json({
+          cart: []
+        });
       }
-      
+
       const productId = itemId;
       const index = req.session.cart.indexOf(productId);
-      
+
       // Check if the item exists in the cart
       if (index !== -1) {
         req.session.cart.splice(index, 1);
@@ -115,7 +138,7 @@ router.post('/remove', (req, res) => {
         });
         return; // Exit the function
       }
-    
+
       if (req.session.cart.length > 0) {
         const cartQuery = `SELECT * FROM prekes WHERE id IN (${req.session.cart.join(',')})`;
         connection.query(cartQuery, (error, results) => {
@@ -140,8 +163,8 @@ router.post('/remove', (req, res) => {
         error: 'Invalid product ID'
       });
     }
-    
-    
+
+
   } catch (error) {
     console.error('Error:', error);
     return res.status(500).json({
@@ -149,11 +172,7 @@ router.post('/remove', (req, res) => {
     });
   }
 });
-router.get('/items', (req, res) => {
-  res.json({
-    cart: req.session.cart
-  });
-})
+
 
 
 
@@ -232,19 +251,53 @@ function generateSign(data, password) {
   return md5.digest('hex');
 }
 
+
+
+
+
 router.post('/pay', async (req, res) => {
-
-  console.log(req.params.body)
-
   try {
-    const params = {
-      orderid: 123,
-      p_email: 'customer@email.com',
-      amount: 1000,
-      currency: 'EUR'
-    };
-    const urlToGo = paysera.buildRequestUrl(params);
-    res.redirect(urlToGo); // Redirect the client to the URL
+    const cartItems = req.session.cart || [];
+
+    console.log("Items in Cart:", cartItems, req.body); // Log the items array for debugging
+
+    if (cartItems.length === 0) {
+      return res.status(400).json({
+        error: 'No items in the cart'
+      });
+    }
+
+    const prekesQuery = 'SELECT id, price FROM prekes WHERE id IN (?)';
+
+
+    // Query the database to get the prices of the items in the cart
+    connection.query(prekesQuery, [cartItems], (err, prekesResult) => { // Pass itemIds as an array
+      if (err) {
+        console.error('Error selecting cart items from MySQL:', err);
+        return res.status(500).send('Internal Server Error');
+      }
+      // Calculate the total price
+      const totalPrice = prekesResult.reduce((sum, item) => sum + item.price, 0);
+
+      // Convert the total price to cents (assuming totalPrice is in euros)
+      const totalPriceInCents = Math.round(totalPrice * 100);
+
+      // Build Paysera parameters
+      const params = {
+        orderid: 123, // You might want to generate a unique order ID
+        p_email: 'customer@email.com', // Use the customer's email
+        amount: totalPriceInCents,
+        currency: 'EUR'
+      };
+
+      // Generate the Paysera request URL
+      const urlToGo = paysera.buildRequestUrl(params);
+
+      // Return the URL as a JSON response
+      res.json({
+        url: urlToGo
+      });
+    });
   } catch (error) {
     console.error('Error:', error);
     res.status(500).json({
@@ -252,6 +305,10 @@ router.post('/pay', async (req, res) => {
     });
   }
 });
+
+
+
+
 
 router.post('/callback', (req, res) => {
   // Validate callback from Paysera

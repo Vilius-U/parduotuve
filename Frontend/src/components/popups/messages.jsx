@@ -2,6 +2,7 @@ import './style.css';
 import React, { useState, useEffect } from 'react';
 import { BiError } from 'react-icons/bi';
 import { CiHeart } from "react-icons/ci";
+import { NavLink } from 'react-router-dom';
 
 function Messages({ errors, setErrors, added, setAdded }) {
   const [fadeOut, setFadeOut] = useState([]);
@@ -120,7 +121,7 @@ function Messages({ errors, setErrors, added, setAdded }) {
               </div>
               <div className='buttons'>
                 <button onClick={() => FadeOutPopup()} className='continue'>Testi paieška</button>
-                <a href='/cart' className='buy'>Pradėti pirkimą</a>
+                <NavLink to='/cart' className='buy'>Pradėti pirkimą</NavLink>
               </div>
             </div>
           </div>

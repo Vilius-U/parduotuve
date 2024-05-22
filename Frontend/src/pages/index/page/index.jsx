@@ -1,13 +1,13 @@
 import './index.css'
 import React, { useEffect, useState } from 'react';
 import { ReactSession } from 'react-client-session';
-
 import { IconContext } from 'react-icons';
 import { BiCategoryAlt } from "react-icons/bi";
 import * as FaIcons from 'react-icons/fa';
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { LuPackagePlus } from "react-icons/lu";
 import { FaCartPlus } from "react-icons/fa";
+import { NavLink } from 'react-router-dom';
 
 function Index({ addToCart, setErrors, cursor }) {
 
@@ -94,8 +94,8 @@ function Index({ addToCart, setErrors, cursor }) {
               // Render categories
               categories.categories.map((category, index) => (
                 <div className='category' key={index}>
-                  <a href={"/category/" + category.category}><IconContext.Provider value={{ size: '1.5em' }}>
-                  </IconContext.Provider>{category.category}</a>
+                  <NavLink to={"/category/" + category.category}><IconContext.Provider value={{ size: '1.5em' }}>
+                  </IconContext.Provider>{category.category}</NavLink>
                   <div className='arrow'><MdKeyboardArrowRight /></div>
                 </div>
               ))
@@ -123,11 +123,11 @@ function Index({ addToCart, setErrors, cursor }) {
                   </div>
                 )}
                 <div className="photo">
-                  <a href={`/item/${item.id}`}><img src={loading ? 'Loading...' : item.IMAGE} alt="" /></a>
+                  <NavLink to={`/item/${item.id}`}><img src={loading ? 'Loading...' : item.IMAGE} alt="" /></NavLink>
                 </div>
                 <div className="info">
                   <h2>
-                    <a href={`/item/${item.id}`}>{loading ? 'Loading...' : item.TITLE}</a>
+                    <NavLink to={`/item/${item.id}`}>{loading ? 'Loading...' : item.TITLE}</NavLink>
                   </h2>
                   <div className="description" dangerouslySetInnerHTML={{ __html: loading ? 'Loading...' : shortenDescription(item.SHORT_DESCRIPTION) }}></div>
                   <p>

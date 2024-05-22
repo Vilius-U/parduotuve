@@ -1,3 +1,10 @@
+a {
+    transition: 0.3s;
+}
+body {
+    margin: 0;
+    transition: 0.3s;
+}
 main {
     width: 1280px;
     padding-block: 10px;

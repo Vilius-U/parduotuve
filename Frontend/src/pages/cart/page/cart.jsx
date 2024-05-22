@@ -5,6 +5,7 @@ import { ReactSession } from 'react-client-session';
 import { CiHeart } from "react-icons/ci";
 import { IoBagCheckOutline } from "react-icons/io5";
 import { FaRegTrashAlt } from "react-icons/fa";
+import { NavLink } from 'react-router-dom';
 
 function Cart({ addToCart, cartData, removeFromCart, cursor }) {
 
@@ -16,48 +17,50 @@ function Cart({ addToCart, cartData, removeFromCart, cursor }) {
   const [loading, setLoading] = useState(true);
   const [loading2, setLoading2] = useState(true);
   const [cartItems, setCartItems] = useState([]);
-  const getRandomWidth = () => {
-    return Math.floor(Math.random() * (150 - 10 + 1)) + 40; // Generates a random number between 10 and 15
-  };
 
-  const url = "https://www.paysera.com/pay/?data=cHJvamVjdGlkPTI0MTk3NyZhY2NlcHR1cmw9aHR0cCUzQSUyRiUyRmluc3RhbGlrYS5sdCZjYW5jZWx1cmw9aHR0cCUzQSUyRiUyRmluc3RhbGlrYS5sdCZjYWxsYmFja3VybD1odHRwJTNBJTJGJTJGaW5zdGFsaWthLmx0JnRlc3Q9MSZvcmRlcmlkPTEyMyZwX2VtYWlsPWN1c3RvbWVyJTQwZW1haWwuY29tJmFtb3VudD0xMDAwJmN1cnJlbmN5PUVVUg==&sign=6bfec0c10a16c0c97175ebe2f5ee78db"
-  // window.location.href = "https://www.paysera.com/pay/?data=cHJvamVjdGlkPTI0MTk3NyZhY2NlcHR1cmw9aHR0cCUzQSUyRiUyRmluc3RhbGlrYS5sdCZjYW5jZWx1cmw9aHR0cCUzQSUyRiUyRmluc3RhbGlrYS5sdCZjYWxsYmFja3VybD1odHRwJTNBJTJGJTJGaW5zdGFsaWthLmx0JnRlc3Q9MSZvcmRlcmlkPTEyMyZwX2VtYWlsPWN1c3RvbWVyJTQwZW1haWwuY29tJmFtb3VudD0xMDAwJmN1cnJlbmN5PUVVUg==&sign=6bfec0c10a16c0c97175ebe2f5ee78db";
-  console.log("url", url)
+  let totalPrice;
+
+  if (cartData !== undefined && Array.isArray(cartData) && cartData.length > 0) {
+    totalPrice = cartData.reduce((total, cartItem) => total + cartItem.PRICE, 0);
+    // Round the total price to two decimal places
+  } else {
+    totalPrice = 0;
+  }
   useEffect(() => {
     // Fetch the items from ReactSession when the component mounts
     const sessionItems = ReactSession.get("cart");
     setItems(sessionItems);
     setLoading(false);
   }, []);
-  async function paysera(Information) {
-    // window.location.href = "https://www.paysera.com/pay/?data=cHJvamVjdGlkPTI0MTk3NyZhY2NlcHR1cmw9aHR0cCUzQSUyRiUyRmluc3RhbGlrYS5sdCZjYW5jZWx1cmw9aHR0cCUzQSUyRiUyRmluc3RhbGlrYS5sdCZjYWxsYmFja3VybD1odHRwJTNBJTJGJTJGaW5zdGFsaWthLmx0JnRlc3Q9MSZvcmRlcmlkPTEyMyZwX2VtYWlsPWN1c3RvbWVyJTQwZW1haWwuY29tJmFtb3VudD0xMDAwJmN1cnJlbmN5PUVVUg==&sign=6bfec0c10a16c0c97175ebe2f5ee78db";
 
+
+
+  async function paysera() {
     try {
-      
       const response = await fetch('cart/pay', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({totalPrice})
+        body: JSON.stringify() // Assuming Information contains necessary data
       });
-      console.log(totalPrice)
-      // Check if response is a redirect (Content-Type: text/html)
-      if (response.redirected) {
-        window.location.href = "https://www.paysera.com/pay/?data=cHJvamVjdGlkPTI0MTk3NyZhY2NlcHR1cmw9aHR0cCUzQSUyRiUyRmluc3RhbGlrYS5sdCZjYW5jZWx1cmw9aHR0cCUzQSUyRiUyRmluc3RhbGlrYS5sdCZjYWxsYmFja3VybD1odHRwJTNBJTJGJTJGaW5zdGFsaWthLmx0JnRlc3Q9MSZvcmRlcmlkPTEyMyZwX2VtYWlsPWN1c3RvbWVyJTQwZW1haWwuY29tJmFtb3VudD0xMDAwJmN1cnJlbmN5PUVVUg==&sign=6bfec0c10a16c0c97175ebe2f5ee78db";
-        return; // Exit function after redirect
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
       }
 
-      // If response is JSON, parse it
       const responseData = await response.json();
+
       console.log("Response URL:", responseData.url);
 
-      // Handle JSON response data as needed
+      // You might want to redirect the user to the Paysera URL
+      window.location.href = responseData.url;
     } catch (error) {
       console.error('Error:', error);
       // Handle the error gracefully, such as displaying an error message to the user
     }
   }
+
 
 
   const shortenDescription = (description) => {
@@ -102,88 +105,88 @@ function Cart({ addToCart, cartData, removeFromCart, cursor }) {
   //     })
   // }, []);
 
-  let totalPrice;
-
-  if (cartData !== undefined && Array.isArray(cartData) && cartData.length > 0) {
-    totalPrice = cartData.reduce((total, cartItem) => total + cartItem.PRICE, 0);
-    // Round the total price to two decimal places
-  } else {
-    totalPrice = 0;
-  }
 
 
   return (
     <div className="App">
       <main className="App-header mainCart">
-        <div className='cart'>
-          <div className='cartItems'>
-            <h1 className='heading'>Prekių krepšelis</h1>
-            {cartData && cartData.map((item, index) => (
-              <div className={`cartItem ${index === cartData.length - 1 ? 'last' : ''}`}>
-                <div className='cartImage'>
-                  <a href={"/item/" + item.id}>
-                    <img src={item.IMAGE} alt={item.TITLE} />
-                  </a>
+        { cartData == undefined || cartData.length <= 0 ? (
+          <div className='empty'>
+            <h1>Krepšelis tuščias</h1>
+            <p>Pridėkite prekę į krepšelį, kad galėtumete pirkti</p>
+            <NavLink to="/">Pradėti paiešką</NavLink>
+          </div>
+        ) : (
+          <div className='cart'>
+            <div className='cartItems'>
+              <h1 className='heading'>Prekių krepšelis</h1>
+              {cartData && cartData.map((item, index) => (
+                <div className={`cartItem ${index === cartData.length - 1 ? 'last' : ''}`}>
+                  <div className='cartImage'>
+                    <NavLink to={"/item/" + item.id}>
+                      <img src={item.IMAGE} alt={item.TITLE} />
+                    </NavLink>
+                  </div>
+                  <div className='cartTitle'>
+                    <NavLink to={"/item/" + item.id}>
+                      {item.TITLE}
+                    </NavLink>
+                    <button><CiHeart /> Isiminti</button>
+                  </div>
+                  <div className='cartRight'>
+                    <p>{item.PRICE.toFixed(1).slice(0, -2)}.<span className="decimal">{(item.PRICE % 1).toFixed(2).slice(2)}</span> €</p>
+                    <button onClick={() => removeFromCart(item.id)}><FaRegTrashAlt className='trash' /></button>
+                  </div>
+
                 </div>
-                <div className='cartTitle'>
-                  <a href={"/item/" + item.id}>
-                    {item.TITLE}
-                  </a>
-                  <button><CiHeart /> Isiminti</button>
-                </div>
-                <div className='cartRight'>
-                  <p>{item.PRICE} €</p>
-                  <button onClick={() => removeFromCart(item.id)}><FaRegTrashAlt className='trash' /></button>
+              ))}
+            </div>
+            <div className='cartSummary'>
+              <h1>Užsakymas</h1>
+              <div>
+                <div className='cartTotal'>
+                  <p>Suma: </p>
+                  <h2>
+                    {totalPrice.toFixed(1).slice(0, -2)}.<span className="decimal">{(totalPrice % 1).toFixed(2).slice(2)}</span> €
+                  </h2>
                 </div>
 
-              </div>
-            ))}
-          </div>
-          <div className='cartSummary'>
-            <h1>Užsakymas</h1>
-            <div>
-              <div className='cartTotal'>
-                <p>Suma: </p>
-                <h2>
-                  {totalPrice.toFixed(1).slice(0, -2)}.<span className="decimal">{(totalPrice % 1).toFixed(2).slice(2)}</span> €
-                </h2>
-              </div>
-
-              <div className='cartTotal'>
-                <p>
-                  Prekių krepšelije:
-                </p>
-                <h2>
-                  {cartData.length}
-                </h2>
-              </div>
-              <div className='cartTotal'>
-                <p>
-                  Atvešime per:
-                </p>
-                <h2>
-                  ~1 - 4 d. d.
-                </h2>
-              </div>
-              <div className='cartTotal'>
-                <p>
-                  Pristatymo kaina:
-                </p>
-                <h2>
-                  3.99 €
-                </h2>
-              </div>
-            </div>
-            <div className='button' onClick={paysera}>
-              <button>
-                <div className='cartIconStyle'>
-                  <IoBagCheckOutline className='cartIcon' />
+                <div className='cartTotal'>
+                  <p>
+                    Prekių krepšelije:
+                  </p>
+                  <h2>
+                    {cartData.length}
+                  </h2>
                 </div>
-                <p>Pirkti</p>
-              </button>
+                <div className='cartTotal'>
+                  <p>
+                    Atvešime per:
+                  </p>
+                  <h2>
+                    ~1 - 4 d. d.
+                  </h2>
+                </div>
+                <div className='cartTotal'>
+                  <p>
+                    Pristatymo kaina:
+                  </p>
+                  <h2>
+                    3.99 €
+                  </h2>
+                </div>
+              </div>
+              <div className='button' onClick={paysera}>
+                <button>
+                  <div className='cartIconStyle'>
+                    <IoBagCheckOutline className='cartIcon' />
+                  </div>
+                  <p>Pirkti</p>
+                </button>
+              </div>
             </div>
           </div>
-        </div>
+        )}  
       </main>
     </div>
   );

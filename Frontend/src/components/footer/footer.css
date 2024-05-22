@@ -1,8 +1,113 @@
-footer {
+.footer1 {
     background-color: black;
-    color: white;
+    color: beige;
+    text-align: center;
+    padding: 10px 0;
+    padding-block: 50px;
+    transition: 0.3s;
 }
-footer .footer {
+
+.footer1 .footer {
     width: 1280px;
     margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer1 .links {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    justify-content: left;
+}
+
+.footer1 .links a {
+    text-decoration: none;
+    color: white;
+}
+
+.footer1 .links a:hover {
+    text-decoration: underline;
+}
+
+.footer1 .social {
+    display: flex;
+    flex-direction: column;
+}
+
+.footer1 .social .icons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.footer1 .social .icons .icon {
+    cursor: pointer;
+}
+.footer1 .social .icons .facebook {
+    font-size: 50px;
+    color: rgb(66, 103, 178);
+}
+
+.footer1 .social .icons .instagram {
+    font-size: 49px;
+    background: linear-gradient(45deg,
+            rgb(193, 53, 132),
+            rgb(225, 48, 108),
+            rgb(253, 175, 83),
+            rgb(245, 96, 64));
+            border-radius: 15px;
+}
+
+.footer1 .social .icons .youtube {
+    font-size: 65px;
+    color: rgb(255, 0, 0);
+}
+.footer2 {
+    width: 1280px;
+    padding-block: 15px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.3s;
+}
+.footer2 .requisites {
+    display: flex;
+    flex-direction: column;
+}
+.footer2 .requisites .reqInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.footer2 .requisites h1 {
+    color: rgb(86, 86, 86);
+    border-bottom: 1px solid rgb(0, 0, 0, 0.5);
+    text-align: center;
+}
+.footer2 .requisites p {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    margin: 0;
+}
+.footer2 .requisites p button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin: 0;
+    border: 0;
+    padding-left: 5px;
+    background-color: transparent;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.footer2 .requisites p button p {
+    margin: auto;
+    position: absolute;
+    scale: 120%;
+}
+.copyright {
+    text-align: center;
 }

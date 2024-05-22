@@ -34,7 +34,8 @@ app.use(session({
   secret: 'snerionag1r6hbn8', // Change this to a random string
   resave: false,
   saveUninitialized: true,
-  cookie : {secure : false}
+//   cookie : {secure : true},
+  proxy: true
 }));
 app.use('/', indexRouter);
 app.use('/cart', cartRouter);

@@ -1,9 +1,7 @@
 import React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import './header.css'
-import logo from './logo.png'
 import { ReactSession } from 'react-client-session';
-
 import { CiSearch } from "react-icons/ci";
 import { CiShoppingCart } from "react-icons/ci";
 import { FaCircleInfo } from "react-icons/fa6";
@@ -14,6 +12,7 @@ import { FaUser } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
 import { TiDelete } from "react-icons/ti";
 import { FaCircleCheck } from "react-icons/fa6";
+import { NavLink } from 'react-router-dom';
 
 
 function Header({ cartData, setCartData, setErrors, cursor, setCursor, removeFromCart }) {
@@ -30,7 +29,7 @@ function Header({ cartData, setCartData, setErrors, cursor, setCursor, removeFro
       }
     }
   }, [cartData]);
-  
+
 
   function darkMode() {
     var element = document.body;
@@ -85,30 +84,32 @@ function Header({ cartData, setCartData, setErrors, cursor, setCursor, removeFro
         <div className='topHeaderBg'>
           <div className='topHeader'>
             <div>
-              <a href="/About-us" className='button'><FaCircleInfo className='icon' /> Apie mus</a>
-              <a href="tel:+370 655 65525" className='button'><FaPhone className='icon' /> +370 655 65525</a>
-              <a href="mailto:info@instalika.eu" className='button last'><IoMail className='icon' /> info@instalika.eu</a>
+              <NavLink to="/About-us" className='button'><FaCircleInfo className='icon' /> Apie mus</NavLink>
+              <NavLink to="tel:+370 655 65525" className='button'><FaPhone className='icon' /> +370 655 65525</NavLink>
+              <NavLink to="mailto:info@instalika.eu" className='button last'><IoMail className='icon' /> info@instalika.eu</NavLink>
             </div>
 
             <div>
               <button className='button' onClick={darkMode}><FaMoon className='icon' /> Tamsus režimas</button>
-              <a href="/Isimintos-prekes" className='button'><FaHeart className='icon' /> Isimintos</a>
-              <a href="/prisijungimas" className='button last'><FaUser className='icon' /> Prisijungti</a>
+              <NavLink to="/Isimintos-prekes" className='button'><FaHeart className='icon' /> Isimintos</NavLink>
+              <NavLink to="/prisijungimas" className='button last'><FaUser className='icon' /> Prisijungti</NavLink>
             </div>
           </div>
         </div>
         <div className="headerBg">
           <div className='header'>
-            <a href="/"><img className='logoImg' src={logo} alt='haij' /></a>
+
+              <NavLink to="/"><img className='logoImg' src={localStorage.getItem('logo')} alt='haij' /></NavLink>
+          
             <div className="search">
               <div>
-                <a href='/cart' className='cart'>
+                <NavLink to='/cart' className='cart'>
                   <h1>
                     <pre>{cartData && cartData.length !== undefined ? cartData.length : 0}</pre>
                     <CiShoppingCart />
                   </h1>
 
-                </a>
+                </NavLink>
 
                 {cartData && cartData !== undefined && Array.isArray(cartData) && cartData.length > 0 && (
                   <div className='items'>
@@ -119,10 +120,10 @@ function Header({ cartData, setCartData, setErrors, cursor, setCursor, removeFro
                         {cartData.map((item, index) => (
                           <div className="item" key={index}>
                             <div className='photo'>
-                            <a href={`/item/${item.id}`}><img src={item.IMAGE} alt="" /></a>
+                              <NavLink to={`/item/${item.id}`}><img src={item.IMAGE} alt="" /></NavLink>
                             </div>
                             <div className="info">
-                              <a href={`/item/${item.id}`}>{item.TITLE.length > 20 ? item.TITLE.substring(0, 15) + '...' : item.TITLE}</a>
+                              <NavLink to={`/item/${item.id}`}>{item.TITLE.length > 20 ? item.TITLE.substring(0, 15) + '...' : item.TITLE}</NavLink>
                               <p>{item.PRICE.toFixed(2)} €</p>
                             </div>
                             <button onClick={() => removeFromCart(item.id)} className='delete'><b>x</b></button>
@@ -130,7 +131,7 @@ function Header({ cartData, setCartData, setErrors, cursor, setCursor, removeFro
                         ))}
                       </div>
 
-                      <a href='/cart' className='buy'><FaCircleCheck className='icon' /> <b>Pradėti pirkimą</b></a>
+                      <NavLink to='/cart' className='buy'><FaCircleCheck className='icon' /> <b>Pradėti pirkimą</b></NavLink>
                     </div>
                   </div>
                 )}

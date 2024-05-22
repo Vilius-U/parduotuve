@@ -17,6 +17,7 @@ main {
     width: 16%;
     height: 100%;
 }
+
 .Category-header .filters .heading {
     display: flex;
     justify-content: center;
@@ -26,46 +27,50 @@ main {
     gap: 10px;
     border-bottom: 1px solid rgb(0, 0, 0, 0.3);
 }
+
 .Category-header .filters .filter {
     border-bottom: 1px solid rgb(0, 0, 0, 0.3);
     padding-block: 15px;
 }
+
 .Category-header .filters .filter:last-child {
     border-bottom: 0px;
 }
-.Category-header .filters .filter p{
-margin: 0;
+
+.Category-header .filters .filter p {
+    margin: 0;
 }
+
 .Category-header .filters .filter .label {
     padding-left: 10px;
     padding-bottom: 15px;
     color: #444444;
     font-size: large;
 }
+
 .Category-header .filters .container {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-.Category-header .filters .container{
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     position: relative;
-    padding-left: 35px;
-    height: 15px;
-    margin-bottom: 12px;
-    cursor: pointer;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
 }
+
 .Category-header .filters .container label {
     width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
     cursor: pointer;
+    padding-block: 6px;
 }
+
+.Category-header .filters .container label p {
+    margin: 0;
+    width: 80%;
+}
+
 .Category-header .filters .container input {
     position: absolute;
     opacity: 0;
@@ -73,44 +78,46 @@ margin: 0;
     height: 0;
     width: 0;
 }
+
 .Category-header .filters .container .checkmark {
-    position: absolute;
-    top: 0;
-    left: 0;
     height: 15px;
     width: 15px;
     background-color: #ffffff;
     outline: 1px solid;
     border-radius: 5px;
-    transition: 0.3s;
-  }
-  .Category-header .filters .container:hover input ~ .checkmark {
+    transition: 0.15s;
+}
+
+.Category-header .filters .container:hover input~.checkmark {
     background-color: #ccc;
-  }
-  .Category-header .filters .container input:checked ~ .checkmark {
+}
+
+.Category-header .filters .container input:checked~.checkmark {
     background-color: rgb(225, 27, 27);
-  }
-  .Category-header .filters .container .checkmark:after {
+}
+
+.Category-header .filters .container .checkmark:after {
     content: "";
     position: absolute;
     display: none;
     transition: 0.3s;
-  }
-  .Category-header .filters .container input:checked ~ .checkmark:after {
+}
+
+.Category-header .filters .container input:checked~.checkmark:after {
     display: block;
-  }
-  .Category-header .filters .container .checkmark:after {
-    left: 3.5px;
-    top: 3px;
-    width: 6px; 
+}
+
+.Category-header .filters .container .checkmark:after {
+    position: absolute;
+    top: 48%;
+    left: 3.7%;
+    width: 6px;
     height: 5px;
     border: solid white;
     border-width: 0 3px 3px 0;
-    -webkit-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
+    transform: translate(-50%, -50%) rotate(45deg);
     transition: 0.3s;
-  }
+}
 
 
 
@@ -120,19 +127,23 @@ margin: 0;
     justify-content: center;
     background-color: red;
 }
+
 .Category-header .filters .priceRange {
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
+
 .Category-header .filters .priceRange p {
     margin: 0;
 }
+
 .Category-header .filters .priceRange .values {
     width: 100%;
     display: flex;
     justify-content: space-around;
 }
+
 .Category-header .filters .priceRange .valueRange {
     display: flex;
     flex-direction: column;
@@ -140,6 +151,7 @@ margin: 0;
     justify-content: center;
     width: 100%;
 }
+
 .Category-header .filters .priceRange .values .value {
     width: 60%;
     border: 1px solid rgb(0, 0, 0, 0.3);
@@ -193,10 +205,30 @@ margin: 0;
 
 .Category-header .items .loading {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
+    gap: 15px;
     animation: pulse 0.5s infinite alternate;
+    width: 1000px;
+    height: 500px;
+}
+
+.Category-header .items .loading h1 {
+    position: relative;
+    display: flex;
+    align-items: baseline;
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+}
+
+.Category-header .items .loading h1 pre {
+    position: absolute;
+    letter-spacing: -5px;
+    left: 99%;
+    bottom: -25px;
 }
 
 .loading-spinner {

@@ -1,12 +1,15 @@
 var express = require('express');
 var router = express.Router();
-var connection = require('../db'); // Assuming db.js is located in the parent directory
+const {
+  connection,
+  query
+} = require('../db');
 
 
 router.use(express.static('public'));
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', function (req, res, next) {
   const sqlPrekes = 'SELECT * FROM prekes ORDER BY RAND() LIMIT 30';
   const sqlCategory = `SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING_INDEX(CATEGORY, '/Main/', -1), '/', 1) AS category FROM prekes; `;
   const cartItems = req.session.cart || [];
@@ -43,7 +46,13 @@ router.get('/', function(req, res, next) {
         }
 
         // Send the query results back to the client
-        res.render('index', { prekes: prekes, categories: categories, sort: "popular", items: items, cartItems: cartResult[0].total_price });
+        res.render('index', {
+          prekes: prekes,
+          categories: categories,
+          sort: "popular",
+          items: items,
+          cartItems: cartResult[0].total_price
+        });
       });
     });
   });
@@ -54,28 +63,32 @@ router.get('/', function(req, res, next) {
 
 
 
-router.get(['/item/:id'], function(req, res, next) {
-  const id = req.params.id;
-  const sql = `SELECT * FROM prekes WHERE id='${id}';`;
+router.get(['/item/:id'], function (req, res, next) {
 
-  // Execute the main SQL query
-  connection.query(sql, (err, prekes) => {
-    if (err) {
-      console.error('Error executing main query:', err);
-      res.status(500).send('Error retrieving data from database');
-      return;
-    }
-    // Send the query results back to the client
-    res.setHeader('Content-Type', 'application/json');
-    res.json(prekes[0]);
-  });
+  console.log("activated");
+  const id = req.params.id;
+  const sql = 'SELECT * FROM prekes WHERE id = ?'; // Using a placeholder for the parameter
+
+  query(sql, [id]) // Pass the SQL query and the parameter values as an array
+    .then(prekes => {
+      // Send the query results back to the client
+      res.setHeader('Content-Type', 'application/json');
+      res.json(prekes[0]);
+    })
+    .catch(error => {
+      console.error('Error executing query:', error);
+      res.status(500).json({
+        error: 'Internal Server Error'
+      });
+    });
+
 });
 
 
 
 
 
-router.get(['/search/:lookup', '/search/:lookup/:nr'], function(req, res, next) {
+router.get(['/search/:lookup', '/search/:lookup/:nr'], function (req, res, next) {
   let place = "search/" + req.params.lookup;
   let nr = 1; // Initialize nr with a default value of 1
   let current = req.params.nr;
