@@ -3,10 +3,12 @@ import React, { useState, useEffect } from 'react';
 import { BiError } from 'react-icons/bi';
 import { CiHeart } from "react-icons/ci";
 import { NavLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function Messages({ errors, setErrors, added, setAdded }) {
   const [fadeOut, setFadeOut] = useState([]);
   const [intervalId, setIntervalId] = useState(null);
+  const navigate = useNavigate();
 
   const initiateFadeOut = (index) => {
     // Add the index to the fadeOut state to track which errors are fading out
@@ -73,7 +75,13 @@ function Messages({ errors, setErrors, added, setAdded }) {
       setAdded(null);
     }, 300);
   }
-
+  function FadeOutRedirect() {
+        navigate('/cart');
+            document.querySelector('.backgroundAdded').classList.add('added-fade-out');
+    setTimeout(() => {
+      setAdded(null);
+    }, 300);
+  }
 
   return (
     <>
@@ -115,13 +123,13 @@ function Messages({ errors, setErrors, added, setAdded }) {
               <div className='text'>
                 <h1>{added.TITLE}</h1>
                 <p>
-                  {added.PRICE.toFixed(1).slice(0, -2)}.<span className="decimal">{(added.PRICE % 1).toFixed(2).slice(2)}</span> €
+                {added.PRICE.toFixed(2).slice(0, -2)}<span className="decimal">{(added.PRICE % 1).toFixed(2).slice(2)}</span> €
                 </p>
                 <button className='remember'>Isiminti</button>
               </div>
               <div className='buttons'>
                 <button onClick={() => FadeOutPopup()} className='continue'>Testi paieška</button>
-                <NavLink to='/cart' className='buy'>Pradėti pirkimą</NavLink>
+                <button onClick={() => FadeOutRedirect()} className='buy'>Pradėti pirkimą</button>
               </div>
             </div>
           </div>

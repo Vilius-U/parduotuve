@@ -14,7 +14,7 @@ function Rules({ addToCart, setErrors, cursor }) {
                         <h3>I. Sąvokos</h3>
                         <ol>
                             <li>
-                                <strong>Duomenų valdytojas ir svetainės <NavLink to="https://instalika.eu.lt/">operatorius</NavLink> (toliau – Duomenų valdytojas)</strong>
+                                <strong>Duomenų valdytojas ir svetainės operatorius (toliau – Duomenų valdytojas)</strong>
                                 <p>yra MB „Instalika“, įmonės kodas 305276105, PVM mokėtojo kodas LT100012828716, adresas Piratų g. 9, Derceklių k., LT-96399 Klaipėdos r. Lietuvos Respublika, elektroninio pašto adresas – <NavLink to="mailto:info@instalika.eu">info@instalika.eu</NavLink></p>
                             </li>
                             <li>

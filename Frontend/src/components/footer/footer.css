@@ -5,6 +5,7 @@
     padding: 10px 0;
     padding-block: 50px;
     transition: 0.3s;
+    z-index: -4;
 }
 
 .footer1 .footer {

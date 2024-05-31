@@ -3,13 +3,15 @@
     display: flex;
     width: 100%;
     justify-content: space-around;
-    overflow: auto;
-}
-.mainCart {
-    min-height: 80vh;
 }
 .App-header .empty {
-    margin: auto;
+    position: relative;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -80%);
     text-align: center;
     width: 350px;
     padding-block: 5px;
@@ -27,7 +29,71 @@
     border-radius: 15px;
     padding: 15px;
 }
+.App-header .cart .mail {
+    background-color: rgba(0, 0, 0, 0.308);
+    width: 150vh;
+    height: 100vh;
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0%;
+    opacity: 0;
+    z-index: -10;
+    transition: 0.3s;
+}
+.App-header .cart .mail .mailContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 15px;
+    border: 1px solid rgb(0, 0, 0, 0.2);
+}
+.App-header .cart .mail .mailContent form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+.App-header .cart .mail .mailContent form input {
+    border: 0;
+    border-bottom: 1px solid;
+}
 
+.cart .mail input {
+
+    height: 25px;
+    width: 100%;
+    transition: 0.25s;
+    padding-block: 2px;
+    padding-left: 5px;
+    background-color: white;
+    border: 0;
+    border-bottom: 1px solid rgb(0, 0, 0);
+}
+.cart .mail input:focus {
+    box-shadow: 0px 5px 5px -3px rgb(21, 107, 255);
+    outline-color: transparent;
+    outline-style: none;
+}
+
+.App-header .cart .mail .mailContent form button {
+    border: 0;
+    padding: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+    background-color: rgb(21, 107, 255);
+}
+.App-header .cart .appearMail {
+    z-index: 10;
+    opacity: 1;
+}
 .App-header .cartItems .heading {
     margin: auto;
     text-align: center;

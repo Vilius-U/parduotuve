@@ -12,12 +12,13 @@ import { FaUser } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
 import { TiDelete } from "react-icons/ti";
 import { FaCircleCheck } from "react-icons/fa6";
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 
-function Header({ cartData, setCartData, setErrors, cursor, setCursor, removeFromCart }) {
+function Header({ cartData, setCartData, setErrors, cursor, setCursor, removeFromCart, loggedIn }) {
 
   const itemListRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const itemList = itemListRef.current;
@@ -76,11 +77,15 @@ function Header({ cartData, setCartData, setErrors, cursor, setCursor, removeFro
     event.preventDefault();
     setSearch(search);
     console.log(search)
+    navigate(`/search/query=${search}=end`);
+
+
+
+
   }
 
   return (
-    <div>
-      <header>
+<header>
         <div className='topHeaderBg'>
           <div className='topHeader'>
             <div>
@@ -92,7 +97,11 @@ function Header({ cartData, setCartData, setErrors, cursor, setCursor, removeFro
             <div>
               <button className='button' onClick={darkMode}><FaMoon className='icon' /> Tamsus režimas</button>
               <NavLink to="/Isimintos-prekes" className='button'><FaHeart className='icon' /> Isimintos</NavLink>
+
+    { loggedIn ? <NavLink to="/profilis" className='button last'><FaUser className='icon' /> Profilis</NavLink> :
               <NavLink to="/prisijungimas" className='button last'><FaUser className='icon' /> Prisijungti</NavLink>
+  }
+
             </div>
           </div>
         </div>
@@ -151,12 +160,8 @@ function Header({ cartData, setCartData, setErrors, cursor, setCursor, removeFro
           </div>
         </div>
       </header>
-    </div>
   );
 }
-// export function cartInfo(data) {
-//   console.log('Received data:', data);
-// }
 
 
 export default Header;

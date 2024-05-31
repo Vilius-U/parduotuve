@@ -13,6 +13,7 @@ services:
     restart: always
     volumes:
      - ./prekes.sql:/docker-entrypoint-initdb.d/prekes.sql
+     - ./my.cnf:/etc/mysql/conf.d/my.cnf
 
   phpmyadmin:
     depends_on:

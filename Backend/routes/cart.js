@@ -259,7 +259,7 @@ router.post('/pay', async (req, res) => {
   try {
     const cartItems = req.session.cart || [];
 
-    console.log("Items in Cart:", cartItems, req.body); // Log the items array for debugging
+    console.log("email", req.body.email); // Log the items array for debugging
 
     if (cartItems.length === 0) {
       return res.status(400).json({
@@ -284,8 +284,8 @@ router.post('/pay', async (req, res) => {
 
       // Build Paysera parameters
       const params = {
-        orderid: 123, // You might want to generate a unique order ID
-        p_email: 'customer@email.com', // Use the customer's email
+        orderid: Math.floor(Math.random() * 10000) + 1, // You might want to generate a unique order ID
+        p_email: req.body.email, // Use the customer's email
         amount: totalPriceInCents,
         currency: 'EUR'
       };

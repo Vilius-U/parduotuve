@@ -17,6 +17,7 @@ function Cart({ addToCart, cartData, removeFromCart, cursor }) {
   const [loading, setLoading] = useState(true);
   const [loading2, setLoading2] = useState(true);
   const [cartItems, setCartItems] = useState([]);
+  const [appearMail, setAppearMail] = useState(false);
 
   let totalPrice;
 
@@ -35,24 +36,29 @@ function Cart({ addToCart, cartData, removeFromCart, cursor }) {
 
 
 
-  async function paysera() {
+  const mailAppear = () => {
+    setAppearMail(true);
+  }
+
+  const paysera = async function (e) {
+    e.preventDefault();
     try {
       const response = await fetch('cart/pay', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify() // Assuming Information contains necessary data
+        body: JSON.stringify({ email: e.target.elements.email.value }) // Access email from form
       });
-
+  
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-
+  
       const responseData = await response.json();
-
+  
       console.log("Response URL:", responseData.url);
-
+  
       // You might want to redirect the user to the Paysera URL
       window.location.href = responseData.url;
     } catch (error) {
@@ -60,6 +66,7 @@ function Cart({ addToCart, cartData, removeFromCart, cursor }) {
       // Handle the error gracefully, such as displaying an error message to the user
     }
   }
+  
 
 
 
@@ -110,7 +117,7 @@ function Cart({ addToCart, cartData, removeFromCart, cursor }) {
   return (
     <div className="App">
       <main className="App-header mainCart">
-        { cartData == undefined || cartData.length <= 0 ? (
+        {cartData == undefined || cartData.length <= 0 ? (
           <div className='empty'>
             <h1>Krepšelis tuščias</h1>
             <p>Pridėkite prekę į krepšelį, kad galėtumete pirkti</p>
@@ -118,6 +125,18 @@ function Cart({ addToCart, cartData, removeFromCart, cursor }) {
           </div>
         ) : (
           <div className='cart'>
+
+            <div className={`mail ${appearMail ? 'appearMail' : ''}`}>
+              <div className='mailContent'>
+                <p>prieš pradedant pirkimą reikalingas jusų el. Paštas.</p>
+                <form onSubmit={(e) => paysera(e)}>
+                  <input type="email" id="email" name="email" placeholder="Paštas" required/>
+                  <button type="submit">Pateikti</button>
+                </form>
+
+              </div>
+            </div>
+
             <div className='cartItems'>
               <h1 className='heading'>Prekių krepšelis</h1>
               {cartData && cartData.map((item, index) => (
@@ -134,7 +153,9 @@ function Cart({ addToCart, cartData, removeFromCart, cursor }) {
                     <button><CiHeart /> Isiminti</button>
                   </div>
                   <div className='cartRight'>
-                    <p>{item.PRICE.toFixed(1).slice(0, -2)}.<span className="decimal">{(item.PRICE % 1).toFixed(2).slice(2)}</span> €</p>
+                    <p>
+                      {item.PRICE.toFixed(2).slice(0, -2)}<span className="decimal">{(item.PRICE % 1).toFixed(2).slice(2)}</span> €
+                    </p>
                     <button onClick={() => removeFromCart(item.id)}><FaRegTrashAlt className='trash' /></button>
                   </div>
 
@@ -176,7 +197,7 @@ function Cart({ addToCart, cartData, removeFromCart, cursor }) {
                   </h2>
                 </div>
               </div>
-              <div className='button' onClick={paysera}>
+              <div className='button' onClick={mailAppear}>
                 <button>
                   <div className='cartIconStyle'>
                     <IoBagCheckOutline className='cartIcon' />
@@ -186,7 +207,7 @@ function Cart({ addToCart, cartData, removeFromCart, cursor }) {
               </div>
             </div>
           </div>
-        )}  
+        )}
       </main>
     </div>
   );

@@ -69,40 +69,40 @@ app.get('/static/nouislider.min.css', (req, res) => {
 //   res.render('error');
 // });
 // Function to fetch XML data from URL
-async function fetchXmlData(url) {
-  try {
-      const response = await axios.get(url);
-      return response.data;
-  } catch (error) {
-      console.error('Error fetching XML data:', error);
-      throw error;
-  }
-}
+// async function fetchXmlData(url) {
+//   try {
+//       const response = await axios.get(url);
+//       return response.data;
+//   } catch (error) {
+//       console.error('Error fetching XML data:', error);
+//       throw error;
+//   }
+// }
 
 // URL of the XML file
-const xmlUrl = 'https://bkgrupe.lt/XML/prdct_fd_instaltec240131.xml';
+// const xmlUrl = 'https://bkgrupe.lt/XML/prdct_fd_instaltec240131.xml';
 
-// Fetch XML data from the URL
-fetchXmlData(xmlUrl)
-  .then(xmlData => {
-      // Parse XML to JavaScript object
-      xml2js.parseString(xmlData, (err, result) => {
-          if (err) {
-              console.error('Error parsing XML:', err);
-              return;
-          }
-          // Extract products from parsed XML object
-          const products = result.CATALOG.PRODUCT;
-          // Iterate over products and insert into MySQL table if not already exists
-          products.forEach((product) => {
-              // Your existing code to insert products into MySQL database
-              // ...
-          });
-      });
-  })
-  .catch(error => {
-      console.error('Error fetching XML data:', error);
-  });
+// // Fetch XML data from the URL
+// fetchXmlData(xmlUrl)
+//   .then(xmlData => {
+//       // Parse XML to JavaScript object
+//       xml2js.parseString(xmlData, (err, result) => {
+//           if (err) {
+//               console.error('Error parsing XML:', err);
+//               return;
+//           }
+//           // Extract products from parsed XML object
+//           const products = result.CATALOG.PRODUCT;
+//           // Iterate over products and insert into MySQL table if not already exists
+//           products.forEach((product) => {
+//               // Your existing code to insert products into MySQL database
+//               // ...
+//           });
+//       });
+//   })
+//   .catch(error => {
+//       console.error('Error fetching XML data:', error);
+//   });
 
 app.listen(8000)
 module.exports = app;

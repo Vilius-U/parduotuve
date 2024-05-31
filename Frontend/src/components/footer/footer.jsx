@@ -31,7 +31,7 @@ function Footer() {
 
 
   return (
-    <div className="App">
+<>
       <footer className="footer1">
         <div className='footer'>
           <div className='links'>
@@ -71,7 +71,7 @@ function Footer() {
         </div>
       </footer>
       <p className='copyright'>Copyright © 2024. Visos teisės saugomos.</p>
-    </div>
+</>
   );
 }
 

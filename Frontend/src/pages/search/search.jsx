@@ -1,4 +1,4 @@
-import './category.css';
+import './search.css';
 import React, { useEffect, useState, useRef } from 'react';
 import noUiSlider from 'nouislider';
 import wNumb from 'wnumb';
@@ -8,10 +8,24 @@ import { FaFilter } from "react-icons/fa";
 import { ReactSession } from 'react-client-session';
 import { NavLink, useLocation } from 'react-router-dom';
 
-function Category({ addToCart, setErrors, cursor, noImage }) {
+function Search({ addToCart, setErrors, cursor, noImage }) {
 
     const location = useLocation();
-    const category = window.location.pathname.split('category/').pop()
+    const url = window.location.pathname;
+const start = url.indexOf('query=') + 'query='.length;
+const end = url.lastIndexOf('=end');
+
+let category;
+
+if (start !== -1 && end !== -1 && start < end) {
+    category = url.substring(start, end);
+    console.log(category);
+} else {
+    console.log('Query string not found.');
+}
+    const search = window.location.pathname.split(`search/`).pop()
+
+
     const currentPath = location.pathname;
     const [selectCategorized, setSelectCategorized] = useState(ReactSession.get(category + "selectCategorized"));
     const sliderRef = useRef(null); // Reference to the slider element
@@ -57,7 +71,7 @@ function Category({ addToCart, setErrors, cursor, noImage }) {
                 setLoading(true);
                 const minPrice = selectCategorized ? selectCategorized.priceRange.min : null;
                 const maxPrice = selectCategorized ? selectCategorized.priceRange.max : null;
-                const response = await fetch("/main/category/" + category, {
+                const response = await fetch("/main/search/" + category, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -318,7 +332,7 @@ function Category({ addToCart, setErrors, cursor, noImage }) {
 
         try {
             setLoading(true);
-            const response = await fetch("/main/category/" + category, {
+            const response = await fetch("/main/search/" + category, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -597,4 +611,4 @@ function Category({ addToCart, setErrors, cursor, noImage }) {
     );
 }
 
-export default Category;
+export default Search;

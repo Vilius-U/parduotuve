@@ -10,7 +10,7 @@ import { LuPackagePlus } from "react-icons/lu";
 import { FaCartPlus } from "react-icons/fa";
 import { RiArrowDownWideLine } from "react-icons/ri";
 
-function Category({ addToCart, setErrors, cursor }) {
+function Category({ addToCart, setErrors, cursor, noImage }) {
 
     const [items, setItems] = useState([{}]);
     const [loading, setLoading] = useState(true);
@@ -48,12 +48,16 @@ function Category({ addToCart, setErrors, cursor }) {
                         <div className='itemMain'>
 
                             <div className='image'>
-                                <img src={items.IMAGE} alt="" />
+                                <img
+                                  src={items.IMAGE} // Use item.IMAGE if it exists
+                                  onError={(e) => { e.target.onerror = null; e.target.src = noImage; }} // If the image fails to load, set src to noImage
+                                  alt="No photo" // Default alt text
+                                 />
                             </div>
                             <div className='information'>
                                 <h1>{items.TITLE}</h1>
                                 <h2>
-                                    {items.PRICE.toFixed(1).slice(0, -2)}.<span className="decimal">{(items.PRICE % 1).toFixed(2).slice(2)}</span> €
+                                {items.PRICE.toFixed(2).slice(0, -2)}<span className="decimal">{(items.PRICE % 1).toFixed(2).slice(2)}</span> €
                                 </h2>
                                 {items.MANUFACTURER ? <p>Gamintojas: {items.MANUFACTURER}</p> : null}
 
@@ -65,7 +69,7 @@ function Category({ addToCart, setErrors, cursor }) {
                                     <>
                                         <p className='inStock'>
                                             <LuPackagePlus className='label-icon' />
-                                            <b>Turime sandėlyje</b>
+                                            <b>Turime sandėlyje {items.QTY == 2 ? "+10" : ""}</b>
                                         </p>
                                         <div className='button'>
                                             <button onClick={() => addToCart(items.id)}>

@@ -21,6 +21,9 @@ main .information{
     border: 1px solid;
     margin-left: auto;
 }
+main .information h2 {
+    text-align: left;
+}
 main .information .shortDescription {
     border-block: 1px solid rgb(0, 0, 0, 0.5);
 }
@@ -106,9 +109,11 @@ main .description tbody tr:nth-child(even) {
 }
 main .description table {
     width: 100% !important;
+    border-collapse: collapse;
 }
 main .description tbody tr {
     display: flex;
+    justify-content: space-between;
     gap: 10px;
     width: 100%;
 }
@@ -117,10 +122,26 @@ main .description tbody tr td {
 }
 main .description tbody tr td:nth-child(1) {
     border-right: 1px solid;
-    width: 20%;
+    width: 20% !important;
 }
-main .description tbody tr td:nth-child(2) {
-    width: 80%;
+main .description tbody tr td {
+    max-width: 80%;
+    border: 0;
+}
+main .description tbody tr td[colspan="7"] {
+    background-color: white;
+    border-right: 0;
+    border: 1px solid;
+    width: 100%;
+}
+main .description tbody tr td[colspan="7"] p {
+    column-span: all;
+    text-align: center;
+    border-block: 1px solid;
+    font-weight: bold;
+    padding-block: 10px;
+    margin: 0;
+    padding: 0;
 }
 main .description tbody tr td[colspan="2"] {
     background-color: white;

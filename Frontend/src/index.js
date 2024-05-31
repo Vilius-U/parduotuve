@@ -1,21 +1,27 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { render } from 'react-dom';
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation, useNavigationType  } from 'react-router-dom';
 import { TransitionGroup, CSSTransition, Transition } from 'react-transition-group';
 import Indexes from './pages/index/index';
 import Carts from './pages/cart/cart';
 import Items from './pages/item/item';
 import Category from './pages/category/category';
+import Search from './pages/search/search';
 import Header from './components/header/header';
 import Messages from './components/popups/messages';
 import Footer from './components/footer/footer';
 import Rules from './pages/rules/rules';
+import Login from './pages/login/login';
+import Profile from './pages/profile/profile';
+import Activation from './pages/activation/activation';
 import { ReactSession } from 'react-client-session';
 import logo from './logo.png';
+import noImage from './noImage.png';
 import './components/pageTransitions/pageTransitions.css'; // Import the CSS file here
 
 function App({ in: inProp }) {
   ReactSession.setStoreType('localStorage');
+
   const [logoLoaded, setLogoLoaded] = useState(false);
   const [errors, setErrors] = useState([]);
   const [added, setAdded] = useState(false);
@@ -23,6 +29,32 @@ function App({ in: inProp }) {
   const [nr, setNr] = useState(1);
   const [cartData, setCartData] = useState(ReactSession.get('cart'));
   const [prevLocation, setPrevLocation] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [loading2, setLoading2] = useState(true);
+  const [items, setItems] = useState([{}]);
+  const [categories, setCategories] = useState([{}]);
+  const [loggedIn, setLoggedIn] = useState(ReactSession.get('loggedIn') || false);
+
+  useEffect(() => {
+    fetch('/main/profile')
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error('Failed to fetch profile data');
+      })
+      .then(() => {
+        setLoggedIn(true);
+        ReactSession.set('loggedIn', true);
+      })
+      .catch((error) => {
+        console.error('Error fetching profile data:', error);
+        setLoggedIn(false);
+        ReactSession.set('loggedIn', false);
+      });
+  }, []);
+  
+  
 
  useEffect(() => {
     const savedLogo = localStorage.getItem('logo');
@@ -40,7 +72,6 @@ function App({ in: inProp }) {
   }, []);
 
   async function removeFromCart(itemId) {
-    console.log(itemId);
     if (typeof setCursor === 'function') {
       setCursor(true);
     }
@@ -69,7 +100,6 @@ function App({ in: inProp }) {
         const data = await response.json();
         ReactSession.set('cart', data.cart);
         setCartData(data.cart);
-        console.log('removed:', data);
       }
     } catch (error) {
       if (typeof setCursor === 'function') {
@@ -102,7 +132,6 @@ function App({ in: inProp }) {
         setCartData(data.cart);
         setCursor(false);
         // Update added state
-        console.log(cartData);
         setAdded((prevAdded) =>
           data.cart.find((item) => item.id === itemId) || prevAdded
         );
@@ -136,27 +165,76 @@ function App({ in: inProp }) {
 
   const nodeRef = useRef(null);
 
-  
+
+
   useEffect(() => {
-    // Smooth scroll to the top when location changes
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
-  }, [location]);
+    // Only trigger the effect when the current path is '/'
+    if (location.pathname == '/' & (items.length == 1 || items == undefined || categories.categories == undefined || categories.categories.length == 1)) {
+
+      const fetchData = async () => {
+        try {
+          const responseItems = await fetch("/main/items");
+          if (!responseItems.ok) {
+            throw new Error('Nepavyko gauti prekių, bandykite dar kartą vėliau');
+          }
+          const dataItems = await responseItems.json();
+          setItems(dataItems.items);
+          setLoading(false); // Set loading to false after data is fetched
+
+          const responseCategories = await fetch("/main/categories");
+          if (!responseCategories.ok) {
+            throw new Error('Nepavyko gauti katalogų, bandykite dar kartą vėliau');
+          }
+          const dataCategories = await responseCategories.json();
+          setCategories(dataCategories);
+          setLoading2(false); // Set loading to false after data is fetched
+        } catch (error) {
+          setLoading(false); // Set loading to false in case of error
+          setLoading2(false); // Set loading to false in case of error
+          setErrors(prevErrors => [...prevErrors, error.message]);
+        }
+      };
+            fetchData();
+    }
+  }, [location.pathname == '/']);
+
+  const navigationType = useNavigationType();
+
+  useEffect(() => {
+    // Scroll to top only if the navigation type is not 'POP'
+    if (navigationType !== 'POP') {
+      const timeoutId = setTimeout(() => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth',
+        });
+      }, 300);
+
+      // Clear the timeout if the component unmounts
+      return () => clearTimeout(timeoutId);
+    }
+  }, [location, navigationType]);
+
+
+  
 
   return (
     <>
-      <Header logoLoaded={logoLoaded} removeFromCart={removeFromCart} cartData={cartData} setCartData={setCartData} setErrors={setErrors} setCursor={setCursor} cursor={cursor}/>
+ <Header loggedIn={loggedIn} setLoggedIn={setLoggedIn} logoLoaded={logoLoaded} removeFromCart={removeFromCart} cartData={cartData} setCartData={setCartData} setErrors={setErrors} setCursor={setCursor} cursor={cursor}/>
       <Messages nr={nr} errors={errors} setErrors={setErrors} added={added} setAdded={setAdded}/>
       <TransitionGroup component={null}>
-      <CSSTransition key={location.key} classNames="fade">
-            <Routes location={location}>
-            <Route path="/" element={ <Indexes nr={nr} added={added} setAdded={setAdded} addToCart={addToCart} errors={errors} setErrors={setErrors} cursor={cursor} setCursor={setCursor} cartData={cartData} setCartData={setCartData}/>}/>
-            <Route path="/cart" element={<Carts removeFromCart={removeFromCart} nr={nr} added={added} setAdded={setAdded} addToCart={addToCart} errors={errors} setErrors={setErrors} cursor={cursor} setCursor={setCursor} cartData={cartData} setCartData={setCartData}/>}/>
-            <Route path="/item/:id" element={<Items nr={nr} added={added} setAdded={setAdded} addToCart={addToCart} errors={errors} setErrors={setErrors} cursor={cursor} setCursor={setCursor} cartData={cartData} setCartData={setCartData}/> }/>
-            <Route path="/category/:id" element={<Category nr={nr} added={added} setAdded={setAdded} addToCart={addToCart} errors={errors} setErrors={setErrors} cursor={cursor} setCursor={setCursor} cartData={cartData} setCartData={setCartData}/>}/>
+       <CSSTransition key={location.key} classNames="fade" timeout={200}>
+          <Routes location={location}>
+            <Route path="/" element={<Indexes noImage={noImage} items={items} loading2={loading2} loading={loading} categories={categories} nr={nr} added={added} setAdded={setAdded} addToCart={addToCart} errors={errors} setErrors={setErrors} cursor={cursor} setCursor={setCursor} cartData={cartData} setCartData={setCartData}/>}/>
+            <Route path="/cart" element={<Carts noImage={noImage} removeFromCart={removeFromCart} nr={nr} added={added} setAdded={setAdded} addToCart={addToCart} errors={errors} setErrors={setErrors} cursor={cursor} setCursor={setCursor} cartData={cartData} setCartData={setCartData}/>}/>
+            <Route path="/item/:id" element={<Items noImage={noImage} nr={nr} added={added} setAdded={setAdded} addToCart={addToCart} errors={errors} setErrors={setErrors} cursor={cursor} setCursor={setCursor} cartData={cartData} setCartData={setCartData}/>}/>
+            <Route path="/category/:id/*" element={<Category noImage={noImage} nr={nr} added={added} setAdded={setAdded} addToCart={addToCart} errors={errors} setErrors={setErrors} cursor={cursor} setCursor={setCursor} cartData={cartData} setCartData={setCartData}/>}/>
+            <Route path="/search/*" element={<Search noImage={noImage} items={items} nr={nr} addToCart={addToCart} errors={errors} setErrors={setErrors} cursor={cursor} setCursor={setCursor} cartData={cartData} setCartData={setCartData}/>}/>
             <Route path="/taisykles" element={<Rules />} />
+            <Route path='/activation/*' element={<Activation setErrors={setErrors} errors={errors} />} />
+            <Route path="/prisijungimas" element={<Login loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>}/>
+            <Route path='/profilis' element={<Profile loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>} />
+
           </Routes>
         </CSSTransition>
       </TransitionGroup>
