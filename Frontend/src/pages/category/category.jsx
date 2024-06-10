@@ -6,7 +6,7 @@ import { LuPackagePlus } from "react-icons/lu";
 import { FaCartPlus } from "react-icons/fa";
 import { FaFilter } from "react-icons/fa";
 import { ReactSession } from 'react-client-session';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useParams } from 'react-router-dom';
 
 function Category({ addToCart, setErrors, cursor, noImage }) {
 
@@ -32,6 +32,13 @@ function Category({ addToCart, setErrors, cursor, noImage }) {
     const [timeoutId, setTimeoutId] = useState(null);
     const timeoutIdRef = useRef(null); // Use a ref to store the timeout ID
     const sliderInstanceRef = useRef(null); // Ref to keep track of the slider instance
+
+    const params = useParams();
+
+    useEffect(() => {
+        console.log(params);
+        document.title = params.id + " | Instalika.lt" || "Instalika.lt";
+      }, []);
 
     const shortenDescription = (description) => {
         if (!description) return ''; // Return empty string if description is falsy
@@ -252,16 +259,11 @@ function Category({ addToCart, setErrors, cursor, noImage }) {
         setCurrentPage(index);
 
         // Smoothly scroll to the top
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
     }
 
     useEffect(() => {
         if (changed != false) {
             handleSubmit();
-            setChanged(false);
         }
     }, [currentPage]);
 
@@ -348,6 +350,18 @@ function Category({ addToCart, setErrors, cursor, noImage }) {
                 } else {
                     setSliderValues([document.getElementById('minValue').value, data.highest_price_item]);
                 }
+            }
+
+            if (changed == true) {
+
+
+                setTimeout(() => {
+                     window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+                } , 1);
+                setChanged(false);
             }
 
             setLoading(false);

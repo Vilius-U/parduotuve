@@ -1,0 +1,45 @@
+.orderPayment {
+    width: 1280px;
+    padding-block: 10px;
+    margin: 0 auto;
+}
+.orderPayment .orderItems {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+.orderPayment .orderItems .orderItem {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-inline: 30px;
+    width: 95%;
+    outline: 1px solid #ccc;
+}
+.orderPayment .orderItems .orderItem .title {
+    text-decoration: none;
+    color: rgb(44, 44, 44);
+    width: 60%;
+}
+.orderPayment .orderItems .orderItem img {
+    width: 200px;
+}
+.orderPayment .success h1 {
+    padding-left: 50px;
+    padding-block: 5px;
+    background: linear-gradient(90deg,
+    rgb(59, 131, 255) -30%, /* Increase the percentage to have more white */
+    rgb(210, 235, 255) 80% /* Blue starts at 70% and goes to 100% */
+);
+}
+.orderPayment .failed h1 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-left: 50px;
+    padding-block: 5px;
+    background-color: red;
+    color: white;
+}

@@ -43,7 +43,7 @@ router.get('/mail' , (req, res, next) => {
 router.get('/items',  (req, res, next) => {
   // Execute the SQL query
   console.log("activated")
-  connection.query('SELECT * FROM prekes WHERE QTY > 0 ORDER BY sukurimo_data DESC LIMIT 30 ', (error, results, fields) => {
+  connection.query('SELECT TITLE, SHORT_DESCRIPTION, DESCRIPTION, MANUFACTURER, PRICE, IMAGE, QTY, id FROM prekes WHERE QTY > 0 ORDER BY sukurimo_data DESC LIMIT 30 ', (error, results, fields) => {
     if (error) {
       console.error('Error executing query:', error);
       res.status(500).json({
@@ -62,8 +62,12 @@ router.get('/items',  (req, res, next) => {
 
 router.get('/categories', async (req, res, next) => {
   try {
-    // Define a function to recursively retrieve subcategories
-    const getSubcategoriesRecursive = async (categoryName) => {
+    // Define a function to recursively retrieve subcategories with a depth limit
+    const getSubcategoriesRecursive = async (categoryName, depth) => {
+      if (depth > 2) {
+        return []; // Stop recursion if depth exceeds 2
+      }
+
       let subcategories = await query(`SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING_INDEX(CATEGORY, '/${categoryName}/', -1), '/', 1) AS subcategory FROM prekes WHERE CATEGORY LIKE '%/${categoryName}/%' ORDER BY subcategory ASC`);
       if (subcategories.length === 0) {
         return [];
@@ -71,7 +75,7 @@ router.get('/categories', async (req, res, next) => {
         let categoriesWithSubcategories = [];
         for (let subcategory of subcategories) {
           let subcategoryName = subcategory.subcategory;
-          let subSubcategories = await getSubcategoriesRecursive(`${categoryName}/${subcategoryName}`);
+          let subSubcategories = await getSubcategoriesRecursive(`${categoryName}/${subcategoryName}`, depth + 1);
           categoriesWithSubcategories.push({
             category: subcategoryName,
             subcategories: subSubcategories
@@ -88,7 +92,7 @@ router.get('/categories', async (req, res, next) => {
     let categoriesWithSubcategories = [];
     for (let category of categoriesResults) {
       let categoryName = category.category;
-      let subcategories = await getSubcategoriesRecursive(categoryName);
+      let subcategories = await getSubcategoriesRecursive(categoryName, 1); // Start with depth 1
       categoriesWithSubcategories.push({
         category: categoryName,
         subcategories: subcategories
@@ -180,13 +184,13 @@ router.post('/category/*', async (req, res, next) => {
         priceRange = "";
     }
 
-    let order = "";
+    let order = "ORDER BY CASE WHEN QTY > 0 THEN 1 ELSE 2 END";
 
     if (formData && formData.order) {
         if (formData.order == "asc") {
-            order += " ORDER BY PRICE ASC";
+            order += ", PRICE ASC";
         } else if (formData.order == "desc") {
-            order += " ORDER BY PRICE DESC";
+            order += ", PRICE DESC";
         } else {
             order += "";
         }
@@ -198,7 +202,7 @@ router.post('/category/*', async (req, res, next) => {
         pages = "OFFSET " + (formData.page - 1) * 30;
     }
 
-    const itemsQuery = `SELECT * FROM prekes WHERE ${categorySearch} ${inStock} ${manufacturersFilter} ${priceRange} ${order} LIMIT 30 ${pages}`;
+    const itemsQuery = `SELECT TITLE, SHORT_DESCRIPTION, DESCRIPTION, MANUFACTURER, PRICE, IMAGE, QTY, id FROM prekes WHERE ${categorySearch} ${inStock} ${manufacturersFilter} ${priceRange} ${order} LIMIT 30 ${pages}`;
     const totalItemsQuery = `SELECT COUNT(*) AS total_items FROM prekes WHERE ${categorySearch} ${inStock} ${manufacturersFilter} ${priceRange}`;
     const highestPriceQuery = `SELECT PRICE FROM prekes WHERE ${categorySearch} ${inStock} ${manufacturersFilter} ORDER BY PRICE DESC LIMIT 1`;
     const lowestPriceQuery = `SELECT PRICE FROM prekes WHERE ${categorySearch} ${inStock} ${manufacturersFilter} ORDER BY PRICE ASC LIMIT 1`;
@@ -314,17 +318,17 @@ let categorise = "";
         priceRange = "";
     }
 
-    let order = "";
+    let order = "ORDER BY CASE WHEN QTY > 0 THEN 1 ELSE 2 END";
 
     if (formData && formData.order) {
-        if (formData.order == "asc") {
-            order += " ORDER BY PRICE ASC";
-        } else if (formData.order == "desc") {
-            order += " ORDER BY PRICE DESC";
-        } else {
-            order += "";
-        }
-    }
+      if (formData.order == "asc") {
+          order += ", PRICE ASC";
+      } else if (formData.order == "desc") {
+          order += ", PRICE DESC";
+      } else {
+          order += "";
+      }
+  }
 
     let pages = "";
 
@@ -332,7 +336,7 @@ let categorise = "";
         pages = "OFFSET " + (formData.page - 1) * 30;
     }
 
-    const itemsQuery = `SELECT * FROM prekes WHERE MATCH(TITLE, SHORT_DESCRIPTION, DESCRIPTION, MANUFACTURER) AGAINST( ? IN NATURAL LANGUAGE MODE) ${inStock} ${manufacturersFilter} ${priceRange} ${order} LIMIT 30 ${pages}`;
+    const itemsQuery = `SELECT TITLE, SHORT_DESCRIPTION, DESCRIPTION, MANUFACTURER, PRICE, IMAGE, QTY, id FROM prekes WHERE MATCH(TITLE, SHORT_DESCRIPTION, DESCRIPTION, MANUFACTURER) AGAINST( ? IN NATURAL LANGUAGE MODE) ${inStock} ${manufacturersFilter} ${priceRange} ${order} LIMIT 30 ${pages}`;
     const totalItemsQuery = `SELECT COUNT(*) AS total_items FROM prekes WHERE MATCH(TITLE, SHORT_DESCRIPTION, DESCRIPTION, MANUFACTURER) AGAINST( ? IN NATURAL LANGUAGE MODE) ${inStock} ${manufacturersFilter} ${priceRange}`;
     const highestPriceQuery = `SELECT PRICE FROM prekes WHERE MATCH(TITLE, SHORT_DESCRIPTION, DESCRIPTION, MANUFACTURER) AGAINST( ? IN NATURAL LANGUAGE MODE) ${categorise} ${inStock} ${manufacturersFilter} ORDER BY PRICE DESC LIMIT 1`;
     const lowestPriceQuery = `SELECT PRICE FROM prekes WHERE MATCH(TITLE, SHORT_DESCRIPTION, DESCRIPTION, MANUFACTURER) AGAINST( ? IN NATURAL LANGUAGE MODE) ${categorise} ${inStock} ${manufacturersFilter} ORDER BY PRICE ASC LIMIT 1`;
@@ -385,6 +389,7 @@ router.post('/login', (req, res) => {
 
     // Login successful
     const user = {
+      id: results[0].id,
       name: results[0].name,
       surname: results[0].surname,
       email: results[0].email
@@ -557,21 +562,50 @@ router.post('/activate', (req, res) => {
   });
 });
 
-
-// Profile route
-router.get('/profile', (req, res) => {
+router.get('/profile', async (req, res) => {
   console.log("profile activated");
   console.log("profile: ", req.session.user);
 
-  if (req.session.user) {
-    res.status(200).json({
-      user: req.session.user
-    });
-  } else {
-    res.status(401).json({
+  if (!req.session.user) {
+    return res.status(401).json({
       error: 'Unauthorized'
     });
   }
+
+  let transactions = [];
+
+  try {
+    transactions = await query('SELECT * FROM transakcijos WHERE buyer_id = ?', [req.session.user.id], (error, results) => {
+      if (error) {
+        transactions = "error";
+      }
+    });
+
+    console.log(transactions);
+    
+ res.status(200).json({
+        user: req.session.user,
+        transactions: transactions
+      });
+    
+  } catch (error) {
+    console.error('Error executing query:', error);
+    res.status(500).json({
+      error: 'Internal Server Error'
+    });
+  }
+});
+
+router.get('/logout', (req, res) => {
+  try {
+  req.session.destroy();
+  res.redirect('/');
+} catch (error) {
+  console.error('Error executing query:', error);
+  res.status(500).json({
+    error: 'Internal Server Error'
+  });
+}
 });
 
 process.on('exit', () => {
@@ -583,104 +617,5 @@ router.get('/', (req, res, next) => {
   res.send("main")
 })
 
-// router.get(['/:category', '/:category/:nr'], function (req, res, next) {
-//   const place = "Main" + "/" + req.params.category;
-//   let nr = 1; // Initialize nr with a default value of 1
-//   let orderByClause = ''; // Initialize orderByClause
-//   const cartItems = req.session.cart || [];
-//   const items = cartItems.length
-//   console.log(cartItems)
-
-//   current = req.params.nr;
-//   if (current == undefined) {
-//     current = 1
-//   }
-
-//   const category = decodeURIComponent(req.params.category.replace(/\+/g, ' ')); // Decode the URL-encoded category
-
-//   // Check if nr parameter exists and assign it
-//   if (req.params.nr) {
-//     nr = parseInt(decodeURIComponent(req.params.nr.replace(/\+/g, ' ')), 10); // Parse nr as an integer
-//   }
-
-//   const offset = (nr - 1) * 30; // Calculate the offset based on the page number
-
-//   // Check if the sorting option is provided and set the orderByClause accordingly
-//   if (req.query.sort === 'asc') {
-//     orderByClause = 'ORDER BY PRICE ASC';
-//   } else if (req.query.sort === 'desc') {
-//     orderByClause = 'ORDER BY PRICE DESC';
-//   } else if (req.query.sort === 'a-z') {
-//     orderByClause = 'ORDER BY TITLE ASC';
-//   } else if (req.query.sort === 'z-a') {
-//     orderByClause = 'ORDER BY TITLE DESC';
-//   }
-
-//   // Define SQL queries
-//   const sqlPrekes = `SELECT * FROM prekes WHERE CATEGORY LIKE ? ${orderByClause} LIMIT 30 OFFSET ?;`;
-//   const total = `SELECT COUNT(*) AS total FROM prekes WHERE CATEGORY LIKE ?;`;
-//   const sqlCategory = `SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING_INDEX(CATEGORY, '/Main/', -1), '/', 1) AS category FROM prekes;`;
-
-
-
-//   let cart = 0; // Initialize cart query
-
-//   // Check if cartItems array is not empty
-//   if (cartItems.length > 0) {
-//     cart = `SELECT SUM(PRICE) AS total_price FROM prekes WHERE id IN (${cartItems.join(',')});`; // Join cartItems array to form comma-separated IDs
-//   } else {
-//     // Set cart query to return no rows if cartItems array is empty
-//     cart = 'SELECT 0 AS total_price;';
-//   }
-
-//   // Execute all SQL queries sequentially
-//   connection.query(sqlPrekes, [`%${category}%`, offset], (errPrekes, prekes) => {
-//     if (errPrekes) {
-//       console.error('Error executing prekes query:', errPrekes);
-//       res.status(500).send('Error retrieving prekes from database');
-//       return;
-//     }
-
-//     connection.query(total, [`%${category}%`], (errTotal, totalResult) => {
-//       if (errTotal) {
-//         console.error('Error executing total count query:', errTotal);
-//         res.status(500).send('Error retrieving total count from database');
-//         return;
-//       }
-
-//       connection.query(sqlCategory, (errCategory, categories) => {
-//         if (errCategory) {
-//           console.error('Error executing category query:', errCategory);
-//           res.status(500).send('Error retrieving categories from database');
-//           return;
-//         }
-
-//         // Execute cart query only if cartItems array is not empty
-
-//         connection.query(cart, (errCart, cartResult) => {
-//           if (errCart) {
-//             console.error('Error executing cart query:', errCart);
-//             res.status(500).send('Error retrieving cart items from database');
-//             return;
-//           }
-
-//           // Send all query results back to the client
-//           res.render('index', {
-//             prekes: prekes,
-//             categories: categories,
-//             search: category,
-//             total: totalResult[0].total,
-//             current: current,
-//             place: place,
-//             sort: req.query.sort,
-//             cartItems: cartResult[0].total_price,
-//             items: items
-//           });
-//         });
-
-//       });
-//     });
-//   });
-// });
 
 module.exports = router;

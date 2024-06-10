@@ -10,6 +10,7 @@ const crypto = require('crypto');
 const request = require('request');
 const cors = require('cors');
 const session = require('express-session');
+const bcrypt = require('bcryptjs');
 const {
   createProxyMiddleware
 } = require('http-proxy-middleware');
@@ -47,9 +48,8 @@ router.use(session({
 var options = {
   projectid: '241977',
   sign_password: '2ece43ae64a6d8da7b88b71be40f7b13',
-  accepturl: 'http://instalika.lt',
-  cancelurl: 'http://instalika.lt',
-  callbackurl: 'http://instalika.lt',
+  cancelurl: 'https://instalika.lt',
+  callbackurl: 'https://instalika.lt',
   test: 1
 };
 
@@ -90,7 +90,6 @@ router.post('/add', (req, res) => {
     });
   });
 });
-
 
 router.post('/remove', (req, res) => {
 
@@ -173,15 +172,6 @@ router.post('/remove', (req, res) => {
   }
 });
 
-
-
-
-
-
-
-
-
-// GET route to render the cart page
 router.get('/', (req, res) => {
   const cartItems = req.session.cart || [];
   const total = cartItems.length;
@@ -238,56 +228,58 @@ function urlEncodeObject(obj) {
     .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(obj[key])}`)
     .join('&');
 }
-
-// Function to replace characters in a string to make it URL-safe
 function makeUrlSafe(str) {
   return str.replace(/\//g, '_').replace(/\+/g, '-');
 }
-
-// Function to generate the sign parameter using md5 hash
 function generateSign(data, password) {
   const md5 = crypto.createHash('md5');
   md5.update(data + password);
   return md5.digest('hex');
 }
 
-
-
-
-
 router.post('/pay', async (req, res) => {
   try {
-    const cartItems = req.session.cart || [];
+      const cartItems = req.session.cart || [];
+      console.log("email", req.body.email); // Log the items array for debugging
 
-    console.log("email", req.body.email); // Log the items array for debugging
-
-    if (cartItems.length === 0) {
-      return res.status(400).json({
-        error: 'No items in the cart'
-      });
-    }
-
-    const prekesQuery = 'SELECT id, price FROM prekes WHERE id IN (?)';
-
-
-    // Query the database to get the prices of the items in the cart
-    connection.query(prekesQuery, [cartItems], (err, prekesResult) => { // Pass itemIds as an array
-      if (err) {
-        console.error('Error selecting cart items from MySQL:', err);
-        return res.status(500).send('Internal Server Error');
+      if (cartItems.length === 0) {
+          return res.status(400).json({
+              error: 'No items in the cart'
+          });
       }
+
+      const prekesQuery = 'SELECT id, price FROM prekes WHERE id IN (?)';
+
+      // Query the database to get the prices of the items in the cart
+      const prekesResult = await query(prekesQuery, [cartItems]);
+
       // Calculate the total price
       const totalPrice = prekesResult.reduce((sum, item) => sum + item.price, 0);
+      const code = crypto.randomBytes(20).toString('hex');
+      const encryptedCode = bcrypt.hashSync(code, 10);
+      const cartString = JSON.stringify(req.session.cart);
+
+      console.log("query", req.session.user?.id ?? null, req.body.email, req.session.cart, totalPrice);
+
+      // Insert the transaction into the database
+      const insertResult = await query(
+          'INSERT INTO transakcijos (buyer_id, email, items, price, code) VALUES (?, ?, ?, ?, ?)', 
+          [req.session.user?.id ?? null, req.body.email, cartString, totalPrice, encryptedCode]
+      );
+
+      const orderId = insertResult.insertId; // Get the inserted order ID
+      console.log("Order ID:", orderId);
 
       // Convert the total price to cents (assuming totalPrice is in euros)
       const totalPriceInCents = Math.round(totalPrice * 100);
 
-      // Build Paysera parameters
+      // Build Paysera parameters (if applicable)
       const params = {
-        orderid: Math.floor(Math.random() * 10000) + 1, // You might want to generate a unique order ID
+        orderid: orderId, // Use the unique order ID
         p_email: req.body.email, // Use the customer's email
         amount: totalPriceInCents,
-        currency: 'EUR'
+        currency: 'EUR',
+        accepturl: `https://instalika.lt/success/${orderId}/${code}`
       };
 
       // Generate the Paysera request URL
@@ -295,20 +287,46 @@ router.post('/pay', async (req, res) => {
 
       // Return the URL as a JSON response
       res.json({
-        url: urlToGo
+          // url: urlToGo
+          url: urlToGo
       });
-    });
   } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({
-      error: 'Internal Server Error'
-    });
+      console.error('Error:', error);
+      res.status(500).json({
+          error: 'Internal Server Error'
+      });
   }
 });
 
+router.post('/success/:orderId/:code', async (req, res) => {
+  const orderId = req.params.orderId;
+  const code = req.params.code;
 
-
-
+  const results = await query('SELECT email, code, items, id FROM transakcijos WHERE id = ?', [orderId]);
+  const items = await query('SELECT * FROM prekes WHERE id IN (?)', [JSON.parse(results[0].items)]);
+  
+  console.log(results[0].code, items, bcrypt.compareSync(code, results[0].code));
+ if (bcrypt.compareSync(code, results[0].code)) {
+  console.log("Success");
+    query('UPDATE transakcijos SET payed = 1 WHERE id = ?', [orderId]);
+    res.json({ 
+      id: results[0].id,
+      email: results[0].email,
+      items: items,
+      success: true
+     });
+  } else if (!bcrypt.compareSync(code, results[0].code) || items.length == 0) {
+    console.log("Fail");
+    res.json({ 
+      id: results[0].id,
+      email: results[0].email,
+      items: items,
+      success: false
+     });
+  } else {
+    res.status(400)
+  }
+});
 
 router.post('/callback', (req, res) => {
   // Validate callback from Paysera

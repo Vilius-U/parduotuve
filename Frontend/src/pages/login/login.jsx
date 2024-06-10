@@ -24,6 +24,27 @@ function Login({ loggedIn, setLoggedIn }) {
     const [emailMessage, setEmailMessage] = useState('');
     const navigate = useNavigate();
 
+
+    useEffect(() => {
+        document.title = "Prisijungimas | Instalika.lt";
+    }, []);
+
+    useEffect(() => {
+        if (confirmed) {
+            document.title = "Laukiama Patvirtinimo | Instalika.lt";
+            return
+        }
+        if (register) {
+            document.title = "Registracija | Instalika.lt";
+        } else {
+            document.title = "Prisijungimas | Instalika.lt";
+        }
+
+    }, [register, confirmed]);
+
+
+
+
     // Function to toggle password visibility
     const togglePasswordVisibility = (field) => {
         if (field === 1) {
@@ -140,7 +161,7 @@ function Login({ loggedIn, setLoggedIn }) {
                 setPassMessage("Slaptažodiai nesutampa");
             }
         } catch (error) {
-            setMessage("ble")
+            setMessage("Klaida");
             return
         }
     }

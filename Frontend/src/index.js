@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { render } from 'react-dom';
-import { BrowserRouter, Routes, Route, useLocation, useNavigationType  } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation, useNavigationType } from 'react-router-dom';
 import { TransitionGroup, CSSTransition, Transition } from 'react-transition-group';
 import Indexes from './pages/index/index';
 import Carts from './pages/cart/cart';
@@ -14,6 +14,7 @@ import Rules from './pages/rules/rules';
 import Login from './pages/login/login';
 import Profile from './pages/profile/profile';
 import Activation from './pages/activation/activation';
+import Success from './pages/success/success';
 import { ReactSession } from 'react-client-session';
 import logo from './logo.png';
 import noImage from './noImage.png';
@@ -36,16 +37,21 @@ function App({ in: inProp }) {
   const [loggedIn, setLoggedIn] = useState(ReactSession.get('loggedIn') || false);
 
   useEffect(() => {
+    console.log('Fetching profile data...');
     fetch('/main/profile')
       .then((response) => {
+        console.log('Response received');
         if (response.ok) {
+          console.log('Profile data fetched successfully');
           return response.json();
         }
+        console.log('Profile data fetched unsuccessfully');
         throw new Error('Failed to fetch profile data');
       })
-      .then(() => {
-        setLoggedIn(true);
+      .then((data) => {
+        console.log('Profile data:', data);
         ReactSession.set('loggedIn', true);
+        setLoggedIn(true);
       })
       .catch((error) => {
         console.error('Error fetching profile data:', error);
@@ -53,6 +59,7 @@ function App({ in: inProp }) {
         ReactSession.set('loggedIn', false);
       });
   }, []);
+  
   
   
 
@@ -234,7 +241,7 @@ function App({ in: inProp }) {
             <Route path='/activation/*' element={<Activation setErrors={setErrors} errors={errors} />} />
             <Route path="/prisijungimas" element={<Login loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>}/>
             <Route path='/profilis' element={<Profile loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>} />
-
+            <Route path='/success/:id/:code' element={<Success addToCart={addToCart} setErrors={setErrors} errors={errors} cursor={cursor} noImage={noImage}/>} />
           </Routes>
         </CSSTransition>
       </TransitionGroup>

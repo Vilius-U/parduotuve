@@ -15,6 +15,9 @@ function Category({ addToCart, setErrors, cursor, noImage }) {
     const [items, setItems] = useState([{}]);
     const [loading, setLoading] = useState(true);
 
+    useEffect(() => {
+        document.title = "Preke | Instalika.lt";
+      }, []);
 
     useEffect(() => {
         const itemId = window.location.pathname.split('/').pop(); // Extract item ID from the URL
@@ -27,7 +30,7 @@ function Category({ addToCart, setErrors, cursor, noImage }) {
             })
             .then(data => {
                 setItems(data);
-                console.log("items: ", items.PRICE, "data: ", data);
+                document.title =  data.TITLE + "| Instalika.lt" || "Preke | Instalika.lt"; 
                 setLoading(false); // Set loading to false after data is fetched
             })
             .catch(error => {

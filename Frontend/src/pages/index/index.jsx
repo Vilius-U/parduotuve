@@ -22,6 +22,10 @@ function Indexes({ addToCart, setErrors, cursor, categories, loading, loading2, 
     return Math.floor(Math.random() * (150 - 10 + 1)) + 40; // Generates a random number between 10 and 15
   };
 
+  useEffect(() => {
+    document.title = "Pagrindinis | Instalika.lt";
+  }, []);
+
   const shortenDescription = (description) => {
     if (!description) return ''; // Return empty string if description is falsy
 

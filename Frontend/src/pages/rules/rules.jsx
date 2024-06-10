@@ -1,8 +1,12 @@
 import { NavLink } from 'react-router-dom';
+import React, { useEffect } from 'react';
 import './rules.css';
 
 function Rules({ addToCart, setErrors, cursor }) {
 
+    useEffect(() => {
+        document.title = "Taisyklės | Instalika.lt";
+    }, []);
 
     return (
         <div className="App">

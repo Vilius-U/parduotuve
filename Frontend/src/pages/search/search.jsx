@@ -12,17 +12,22 @@ function Search({ addToCart, setErrors, cursor, noImage }) {
 
     const location = useLocation();
     const url = window.location.pathname;
-const start = url.indexOf('query=') + 'query='.length;
-const end = url.lastIndexOf('=end');
+    const start = url.indexOf('query=') + 'query='.length;
+    const end = url.lastIndexOf('=end');
 
-let category;
+    let category;
 
-if (start !== -1 && end !== -1 && start < end) {
-    category = url.substring(start, end);
-    console.log(category);
-} else {
-    console.log('Query string not found.');
-}
+    useEffect(() => {
+        document.title = "Paieška | Instalika.lt";
+    }, []);
+    
+    if (start !== -1 && end !== -1 && start < end) {
+        category = decodeURIComponent(url.substring(start, end)); // Decode URL component
+        document.title = category + " | Instalika.lt" || "Paieška | Instalika.lt";
+        console.log(category);
+    } else {
+        console.log('Query string not found.');
+    }
     const search = window.location.pathname.split(`search/`).pop()
 
 
@@ -146,7 +151,7 @@ if (start !== -1 && end !== -1 && start < end) {
                     if (
                         (Number(document.getElementById('minValue').value) != sliderValues[0] || Number(document.getElementById('maxValue').value) != sliderValues[1]) && sliderValues[1] != 0
                     ) {
-                        
+
                         if (currentPage != 1) {
                             setChanged(true);
                             setCurrentPage(1)

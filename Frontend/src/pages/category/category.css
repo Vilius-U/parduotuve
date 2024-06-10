@@ -466,7 +466,92 @@ main {
     color: white;
     background-color: red;
 }
+@media (max-width: 1280px) {
+    .Category-header {
+        flex-direction: column;
+    }
 
+    .Category-header .filters,
+    .Category-header .items {
+        width: 100%;
+    }
+
+    .Category-header .filters {
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 960px) {
+    .Category-header .items .content {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+
+    .Category-header .item {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .Category-header .item .photo,
+    .Category-header .item .info {
+        width: 100%;
+    }
+
+    .Category-header .items h1 {
+        padding-left: 20px;
+    }
+
+    .Category-header .items .order {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .Category-header .items .order select {
+        width: 100%;
+    }
+}
+
+@media (max-width: 600px) {
+    .Category-header .filters {
+        padding: 10px;
+    }
+
+    .Category-header .filters .heading {
+        font-size: 1.2rem;
+    }
+
+    .Category-header .filters .filter .label {
+        font-size: medium;
+    }
+
+    .Category-header .filters .container label p {
+        font-size: 0.9rem;
+    }
+
+    .Category-header .items .content {
+        grid-template-columns: 1fr;
+    }
+
+    .Category-header .items h1 {
+        font-size: 1.5rem;
+        padding: 10px;
+    }
+
+    .Category-header .item {
+        padding: 10px;
+    }
+
+    .Category-header .item .info h2 {
+        font-size: 1rem;
+    }
+
+    .Category-header .item .info p {
+        font-size: 0.9rem;
+    }
+
+    .Category-header .item .button button {
+        font-size: 0.9rem;
+    }
+}
 /* Functional styling;
  * These styles are required for noUiSlider to function.
  * You don't need to change these rules to apply your design.

@@ -1,4 +1,237 @@
 .profile {
+    padding-block: 20px;
     width: 1280px;
     margin: auto;
+}
+.profile .confirm {
+    position: absolute;
+    margin: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    pointer-events: none;
+    border: 1px solid;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    right: 0;
+    top: 110px;
+    transition: 0.3s;
+}
+.profile .True {
+    opacity: 1;
+    pointer-events: all;
+}
+.profile .confirm .confirmText {
+    position: relative;
+    margin: auto;
+    font-weight: bold;
+    background-color: rgb(255, 255, 255);
+    font-size: 20px;
+    width: 400px;
+    height: 15%;
+    z-index: 10;
+    right: 2.2%;
+    top: 20%;
+    color: rgb(0, 0, 0);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.648);
+}
+.profile .confirm .confirmText .confirmButtons {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+.profile .confirm .confirmText .confirmButtons button {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    border: none;
+    background-color: white;
+    font-size: 20px;
+    cursor: pointer;
+    width: 40%;
+    height: 100%;
+    padding: 5px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.4);
+}
+.profile .confirm .confirmText .confirmButtons .no {
+    background-color: red;
+    color: white;
+}
+.profile .confirm .confirmText .confirmButtons  .yes {
+    background: linear-gradient(90deg,
+    rgb(59, 131, 255) -100%,
+    /* Increase the percentage to have more white */
+    rgb(255, 255, 255) 100%
+    /* Blue starts at 70% and goes to 100% */
+);
+    color: rgb(0, 0, 0);
+    text-shadow: 0px 0px 7px rgb(255, 255, 255);
+}
+.profile .profileContainer {
+    display: flex;
+    flex-direction: row;
+}
+
+.profile .profileContainer .profileInfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 50%;
+}
+
+.profile .profileContainer .profileInfo h1 {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+    background: linear-gradient(90deg,
+    rgb(59, 131, 255) -100%,
+    /* Increase the percentage to have more white */
+    rgb(255, 255, 255) 100%
+    /* Blue starts at 70% and goes to 100% */
+);
+    padding-left: 50px;
+    padding-block: 10px;
+    font-size: 32px;
+    margin: 0;
+    top: 9px;
+}
+.profile .profileContainer .profileInfo h2 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-left: 100px;
+    text-align: left;
+}
+
+.profile .profileContainer .profileInfo .basicInfo p {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.profile .profileContainer .profileInfo .logout {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+    text-align: left;
+}
+.profile .profileContainer .profileInfo .logout .logoutIcon {
+    font-size: 20px;
+}
+.profile .profileContainer .profileInfo .logout button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 150px;
+   color:  white;
+    background-color: red;
+    border: none;
+    padding-block: 10px;
+    padding-inline: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.profile .profileContainer .profileTransactions {
+
+    width: 50%;
+    max-height: 700px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    gap: 10px;
+}
+
+.profile .profileContainer .profileTransactions .title {
+    width: 100%;
+    background: linear-gradient(90deg,
+            rgb(59, 131, 255) -100%,
+            /* Increase the percentage to have more white */
+            rgb(255, 255, 255) 100%
+            /* Blue starts at 70% and goes to 100% */
+        );
+}
+
+.profile .profileContainer .profileTransactions .title h1{
+    margin: 0;
+    padding-left: 50px;
+    padding-block: 10px;
+}
+
+.profile .profileContainer .profileTransactions .transactions {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: auto;
+    border: 1px solid black;
+    min-height: 600px;
+    max-height: 600px;
+    transition: 0.3s;
+}
+.profile .profileContainer .profileTransactions .info {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+.profile .profileContainer .profileTransactions .info p {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 25%;
+    margin: 0;
+    padding-block: 5px;
+    outline: 1px solid rgba(0, 0, 0, 0.4);
+}
+.profile .profileContainer .profileTransactions .transaction {
+    position: relative;
+    width: 100%;
+    transition: 0.3s;
+}
+.profile .profileContainer .profileTransactions .transaction .buttons {
+    width: 100%;
+    border: 0;
+    height: 0px;
+    opacity: 1;
+    transition: 0.3s;
+    background-color: rgba(0, 0, 0, 0.603);
+}
+.profile .profileContainer .profileTransactions .transaction .buttons button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+    padding: 10px;
+    background-color: transparent;
+    color: white;
+    border: 0;
+    font-size: 16px;
+    letter-spacing: 1px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.profile .profileContainer .profileTransactions .transaction:hover .buttons {
+    height: 50px;
+}
+.profile .profileContainer .profileTransactions .transaction div {
+    display: flex;
+    flex-direction: row;
+}
+.profile .profileContainer .profileTransactions .transaction p {
+    width: 100%;
+    margin: 0;
+    padding-block: 10px;
+    text-align: center;
+    outline: 1px solid rgba(0, 0, 0, 0.4);
+}
+.profile .profileContainer .profileTransactions .transaction:last-child {
+    border-bottom: none;
 }
