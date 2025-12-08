@@ -4,12 +4,16 @@ var bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
 const session = require('express-session');
 const crypto = require('crypto');
-
+const ejs = require('ejs');
+const path = require('path');
 const {
   connection,
   query
 } = require('../db');
 const { response } = require('../app');
+
+
+
 
 
 const transporter = nodemailer.createTransport({
@@ -22,22 +26,32 @@ const transporter = nodemailer.createTransport({
   }
 });
 
+
 router.get('/mail' , (req, res, next) => {
-  const mailOptions = {
-    from: 'prekyba@instalika.eu', // Sender address
-    to: 'viluzk@gmail.com', // Recipient address
-    subject: 'Test Email', // Email subject
-    text: 'This is a test email sent from Node.js using Gmail SMTP.' // Plain text body
-  };
-  
-  // Send email
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.error('Error sending email:', error);
-    } else {
-      console.log('Email sent:', info.response);
-    }
-  });
+ejs.renderFile('./views/validateEmail.ejs', {user: 'John :)'}, function(err, template) {
+  if (err) {
+    console.log(err);
+  } else {
+    const mailOptions = {
+      from: 'prekyba@instalika.eu', // Sender address
+      to: 'viluzk@gmail.com', // Recipient address
+      subject: 'Test Email', // Email subject
+      html: template
+};
+
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.error('Error sending email:', error);
+        } else {
+          console.log('Email sent:', info.response);
+        }
+      })
+
+    
+    console.log(template);
+    
+  }
+});
 })
 
 router.get('/items',  (req, res, next) => {
@@ -412,7 +426,7 @@ router.post('/register', async (req, res) => {
   const surname = req.body.surname;
   const email = req.body.email;
   const password = await bcrypt.hash(req.body.password, saltRounds);
-  const activation = crypto.randomBytes(20).toString('hex');
+  let activation = crypto.randomBytes(20).toString('hex');
   
   connection.query('INSERT INTO vartotojai (name, surname, email, password, active, activation) VALUES (?, ?, ?, ?, 0, ?)', [name, surname, email, password, activation], (error, results) => {
     if (error) {
@@ -433,28 +447,39 @@ router.post('/register', async (req, res) => {
     console.log("results", results);
   
     // Use insertId to get the ID of the newly inserted row
-    // req.session.user = {
-    //   id: results.insertId,
-    //   name: name,
-    //   surname: surname,
-    //   email: email
-    // };
+    req.session.user = {
+      id: results.insertId,
+      name: name,
+      surname: surname,
+      email: email
+    };
+
+    activation = `${results.insertId}/${activation}`
   
     // Send a response indicating success
 
-    const mailOptions = {
-      from: 'prekyba@instalika.eu', // Sender address
-      to: email, // Recipient address
-      subject: 'Test Email', // Email subject
-      text: `Patvirtinkite savo el. pašta paspaudus šia nuorodą https://instalika.lt/activation/${results.insertId}/${activation}` // Plain text body
+    ejs.renderFile('./views/validateEmail.ejs', {link: activation}, function(err, template) {
+      if (err) {
+        console.log(err);
+      } else {
+        const mailOptions = {
+          from: 'prekyba@instalika.eu', // Sender address
+          to: email, // Recipient address
+          subject: 'Patvirtinkite paskyrą', // Email subject
+          html: template
     };
     
-    // Send email
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.error('Error sending email:', error);
-      } else {
-        console.log('Email sent:', info.response);
+          transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+              console.error('Error sending email:', error);
+            } else {
+              console.log('Email sent:', info.response);
+            }
+          })
+    
+        
+        console.log(template);
+        
       }
     });
 
@@ -504,12 +529,6 @@ function notifyActivation(id) {
   }
 }
 
-// Function to check if user is activated
-function checkIfActivated(id) {
-  // You would typically check your database here to see if the user is activated
-  return false;
-}
-
 router.post('/awaitResponse', (req, res) => {
   try {
     console.log("await response", req.body);
@@ -543,7 +562,7 @@ router.post('/awaitResponse', (req, res) => {
 
 router.post('/activate', (req, res) => {
   const { id, code } = req.body;
-
+  console.log("activating")
   connection.query('UPDATE vartotojai SET active = 1 WHERE id = ? AND activation = ? AND active = 0', [id, code], (error, results) => {
     if (error) {
       console.error('Error updating active:', error);

@@ -212,7 +212,13 @@ function Indexes({ addToCart, setErrors, cursor, categories, loading, loading2, 
 
                       <div className='info2'>
                         <h2>
-                          <NavLink to={`/item/${item.id}`}>{loading ? 'Loading...' : item.TITLE.slice(0, 50)}{item.TITLE.length > 30 ? '...' : ''}</NavLink>
+                          <NavLink to={`/item/${item.id}`}>
+                            {loading
+                              ? 'Loading...'
+                              : item.TITLE
+                                ? (item.TITLE.slice(0, 50) || 'Prekė nerasta') + (item.TITLE.length > 30 ? '...' : '')
+                                : 'Nepavyko gauti prekių'}
+                          </NavLink>
                         </h2>
                         <div className="description" dangerouslySetInnerHTML={{ __html: loading ? 'Loading...' : shortenDescription(item.SHORT_DESCRIPTION) }}></div>
                         <p>
@@ -232,6 +238,7 @@ function Indexes({ addToCart, setErrors, cursor, categories, loading, loading2, 
                           <p><b>I krepšelį</b></p>
                         </button>
                       </div>
+
                     </div>
                   </div>
                 </>

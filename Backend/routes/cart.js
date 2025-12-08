@@ -11,6 +11,7 @@ const request = require('request');
 const cors = require('cors');
 const session = require('express-session');
 const bcrypt = require('bcryptjs');
+const nodemailer = require('nodemailer');
 const {
   createProxyMiddleware
 } = require('http-proxy-middleware');
@@ -27,8 +28,19 @@ const corsOptions = {
   origin: 'http://localhost:3000'
 };
 
-router.use('/api/paysera', payseraProxy);
 router.use(cors(corsOptions));
+
+router.use('/api/paysera', payseraProxy);
+
+const transporter = nodemailer.createTransport({
+  host: 'mail.instalika.eu',
+  port: 587,
+  secure: false,
+  auth: {
+    user: 'prekyba@instalika.eu', // Your Gmail address
+    pass: 'Instal@1973' // Your Gmail password
+  }
+});
 
 router.use(session({
   // secret: 'snerionag1r6hbn8', // Change this to a random string
@@ -238,6 +250,7 @@ function generateSign(data, password) {
 }
 
 router.post('/pay', async (req, res) => {
+  console.log("req", req.body);
   try {
       const cartItems = req.session.cart || [];
       console.log("email", req.body.email); // Log the items array for debugging
@@ -263,8 +276,8 @@ router.post('/pay', async (req, res) => {
 
       // Insert the transaction into the database
       const insertResult = await query(
-          'INSERT INTO transakcijos (buyer_id, email, items, price, code) VALUES (?, ?, ?, ?, ?)', 
-          [req.session.user?.id ?? null, req.body.email, cartString, totalPrice, encryptedCode]
+          'INSERT INTO transakcijos (buyer_id, email, phone, `city/district`, street, postCode, items, price, code) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', 
+          [req.session.user?.id ?? null, req.body.email, req.body.phone, req.body.city, req.body.address, req.body.postCode, cartString, totalPrice, encryptedCode]
       );
 
       const orderId = insertResult.insertId; // Get the inserted order ID
@@ -302,13 +315,50 @@ router.post('/success/:orderId/:code', async (req, res) => {
   const orderId = req.params.orderId;
   const code = req.params.code;
 
-  const results = await query('SELECT email, code, items, id FROM transakcijos WHERE id = ?', [orderId]);
+  const results = await query('SELECT email, code, items, price, id FROM transakcijos WHERE id = ?', [orderId]);
   const items = await query('SELECT * FROM prekes WHERE id IN (?)', [JSON.parse(results[0].items)]);
   
   console.log(results[0].code, items, bcrypt.compareSync(code, results[0].code));
  if (bcrypt.compareSync(code, results[0].code)) {
   console.log("Success");
     query('UPDATE transakcijos SET payed = 1 WHERE id = ?', [orderId]);
+    const mailOptions = {
+      from: 'prekyba@instalika.eu', // Sender address
+      to: results[0].email, // Recipient address
+      subject: 'Jūsų pirkimas patvirtintas', // Email subject
+      text: ` Ačiu, kad naudojates instalika.lt
+Jūsų apmokėjimas buvo patvirtintas.
+Jūsų prekės bus pristatytos per 1 - 4 darbo dienas.` // Plain text body
+    };
+    
+    // Send email
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error('Error sending email:', error);
+      } else {
+        console.log('Email sent:', info.response);
+      }
+    });
+
+    const mailOptions2 = {
+      from: 'prekyba@instalika.eu', // Sender address
+      to: 'viluzk@gmail.com', // Recipient address
+      subject: 'Naujas pirkimas', // Email subject
+      text: 
+      ` Gautas naujas pirkimas:
+Pirkimo id: ${results[0].id}
+      ` // Plain text body
+    };
+    
+    // Send email
+    transporter.sendMail(mailOptions2, (error, info) => {
+      if (error) {
+        console.error('Error sending email:', error);
+      } else {
+        console.log('Email sent:', info.response);
+      }
+    });
+
     res.json({ 
       id: results[0].id,
       email: results[0].email,

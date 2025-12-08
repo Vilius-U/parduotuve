@@ -36,7 +36,6 @@ function Category({ addToCart, setErrors, cursor, noImage }) {
     const params = useParams();
 
     useEffect(() => {
-        console.log(params);
         document.title = params.id + " | Instalika.lt" || "Instalika.lt";
       }, []);
 

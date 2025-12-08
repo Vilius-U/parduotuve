@@ -196,8 +196,6 @@ function App({ in: inProp }) {
           setCategories(dataCategories);
           setLoading2(false); // Set loading to false after data is fetched
         } catch (error) {
-          setLoading(false); // Set loading to false in case of error
-          setLoading2(false); // Set loading to false in case of error
           setErrors(prevErrors => [...prevErrors, error.message]);
         }
       };

@@ -104,5 +104,12 @@ app.get('/static/nouislider.min.css', (req, res) => {
 //       console.error('Error fetching XML data:', error);
 //   });
 
-app.listen(8000)
+// app.listen(5000, '0.0.0.0', () => {
+//   console.log(`Server is running on port ${5000}`);
+// });
+
+module.exports = app;
+app.listen(5000, () => {
+  console.log(`Server is running on port ${5000}`);
+});
 module.exports = app;

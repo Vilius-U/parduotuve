@@ -70,7 +70,7 @@ function Footer() {
           </div>
         </div>
       </footer>
-      <p className='copyright'>Copyright © 2024. Visos teisės saugomos.</p>
+      <p className='copyright'>© 2024. Visos teisės saugomos.</p>
 </>
   );
 }

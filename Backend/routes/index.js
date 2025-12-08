@@ -11,6 +11,15 @@ router.use(express.static('public'));
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
+
+  connection.connect((err) => {
+    if (err) {
+        console.error('Error connecting to MySQL:', err);
+        return;
+    }
+    console.log('Connected to MySQL database');
+});
+
   const sqlPrekes = 'SELECT * FROM prekes ORDER BY RAND() LIMIT 30';
   const sqlCategory = `SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING_INDEX(CATEGORY, '/Main/', -1), '/', 1) AS category FROM prekes; `;
   const cartItems = req.session.cart || [];
@@ -57,6 +66,14 @@ router.get('/', function (req, res, next) {
       });
     });
   });
+
+  connection.end((err) => {
+    if (err) {
+        return console.error('Error closing the connection:', err);
+    }
+    console.log('Connection to MySQL closed');
+});
+
 });
 
 

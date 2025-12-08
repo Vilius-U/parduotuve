@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "start": "node app.js",
     "devStart": "nodemon app.js"
   },
   "dependencies": {
@@ -27,6 +28,7 @@
     "mysql": "^2.18.1",
     "node-cron": "^3.0.3",
     "nodemailer": "^6.9.13",
+    "nodemailer-express-handlebars": "^7.0.0",
     "nouislider": "^15.7.1",
     "paysera-nodejs": "^1.0.2",
     "react-transition-group": "^4.4.5",

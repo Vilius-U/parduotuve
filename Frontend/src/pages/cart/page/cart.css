@@ -42,28 +42,74 @@
     transition: 0.3s;
 }
 .App-header .cart .mail .mailContent {
+    width: 450px;
+    position: relative;
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
+    align-items: center;
     gap: 10px;
     padding: 20px;
     background-color: white;
     border-radius: 15px;
     border: 1px solid rgb(0, 0, 0, 0.2);
 }
+.App-header .cart .mail .mailContent p {
+    width: 80%;
+}
+.App-header .cart .mail .mailContent h2 {
+    text-align: left;
+    width: 80%;
+    margin: 0;
+    padding: 10px;
+}
 .App-header .cart .mail .mailContent form {
+    width: 80%;
+    font-size: 17px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+.App-header .cart .mail .mailContent form p {
+    margin: 0;
+    padding: 5px;
+    width: 100%;
+}
+.App-header .cart .mail .mailContent .mailForm {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 10px;
+    width: 100%;
+    height: 200px;
+    border-block: 1px solid rgba(0, 0, 0, 0.548);
 }
-.App-header .cart .mail .mailContent form input {
-    border: 0;
-    border-bottom: 1px solid;
+.App-header .cart .mail .mailContent form div {
+    width: 100%;
+    height: 25px;
+    position: relative;
+    display: flex;
 }
 
+.App-header .cart .mail .mailContent form label {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    left: -20px;
+}
+.App-header .cart .mail .mailContent form input {
+    font-size: 17px;
+    width: 100%;
+    border: 0;
+}
+.App-header .cart .mail .mailContent form input::placeholder {
+    color: rgb(64, 64, 64);
+}
 .cart .mail input {
 
     height: 25px;
@@ -82,6 +128,7 @@
 }
 
 .App-header .cart .mail .mailContent form button {
+    width: 100%;
     border: 0;
     padding: 10px;
     cursor: pointer;

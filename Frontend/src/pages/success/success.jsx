@@ -71,13 +71,17 @@ const Success = ({ addToCart, setErrors, cursor, noImage }) => {
 
     <div className='orderPayment'>
       {loading ? (
-        <div className='loading'>Laukiama atsakymo...</div>
+
+        <div className='loading'>
+          <div className='loading-spinner'></div>
+          <h1>Laukiama atsakymo</h1>
+        </div>
       ) : success ? (
         <div className='success'>
-          <h1>Jusų užsakymas apmokėtas!</h1>
+          <h1>Jūsų užsakymas apmokėtas!</h1>
           <div className='orderInfo'>
             <p>
-              {orderId && <>Jusu uzsakymo numeris: <b>{orderId}</b> (Ši numeri galėsite naudoti užsakymo sekimui)</>}
+              {orderId && <>Jūsų užsakymo numeris: <b>{orderId}</b> (Šį numerį galėsite naudoti užsakymo sekimui)</>}
             </p>
             <p>
               {email && <>Pirkėjo El. Paštas: <b>{email}</b></>}

@@ -6,6 +6,11 @@ import { CiHeart } from "react-icons/ci";
 import { IoBagCheckOutline } from "react-icons/io5";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { NavLink } from 'react-router-dom';
+import { MdOutlineEmail } from "react-icons/md";
+import { MdOutlineLocalPhone } from "react-icons/md";
+import { PiCity } from "react-icons/pi";
+import { IoLocationOutline } from "react-icons/io5";
+import { BsPostcard } from "react-icons/bs";
 
 function Cart({ addToCart, cartData, removeFromCart, cursor }) {
 
@@ -57,7 +62,13 @@ function Cart({ addToCart, cartData, removeFromCart, cursor }) {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ email: e.target.elements.email.value }) // Access email from form
+        body: JSON.stringify({ 
+          email: e.target.elements.email.value,
+          phone: e.target.elements.phone.value,
+          city: e.target.elements.city.value,
+          address: e.target.elements.street.value,
+          postCode: e.target.elements.postCode.value
+         }) // Access email from form
       });
 
       if (!response.ok) {
@@ -137,12 +148,46 @@ function Cart({ addToCart, cartData, removeFromCart, cursor }) {
 
             <div className={`mail ${appearMail ? 'appearMail' : ''}`} onClick={handleClickOutside}>
               <div className='mailContent' ref={mailRef}>
-                <p>prieš pradedant pirkimą reikalingas jusų el. Paštas.</p>
+                <h2>Reikalinga jūsų informacija</h2>
+                <p>Prieš pradedant pirkimą, reikalingas jūsų el. paštas, telefono numeris ir gyvenamoji vieta</p>
+
                 <form onSubmit={(e) => paysera(e)}>
-                  <input type="email" id="email" name="email" placeholder="Paštas" required />
+                  <div className='mailForm'>
+                    <div>
+                      <label htmlFor="email">
+                        < MdOutlineEmail />
+                      </label>
+                      <input type="email" id="email" name="email" placeholder="Paštas" required />
+                    </div>
+                    <div>
+                      <label htmlFor="phone">
+                        <MdOutlineLocalPhone />
+                      </label>
+                      <input type="phone" id="phone" name="phone" placeholder="Telefono numeris" required />
+                    </div>
+                    <div>
+                      <label htmlFor="city">
+                        <PiCity />
+                      </label>
+                      <input type="text" id="city" name="city" placeholder="Miestas arba rajonas" required />
+                    </div>
+                    <div>
+                      <label htmlFor="street">
+                        <IoLocationOutline />
+                      </label>
+                      <input type="text" name="" id="street" placeholder='Gatvė' required />
+                    </div>
+                    <div>
+                      <label htmlFor="postCode">
+                        <BsPostcard />
+                      </label>
+                      <input type="text" name="postCode" id="postCode" placeholder="Pašto kodas" pattern="\d{5}(-\d{4})?" title="Įveskite galiojantį pašto kodą" required />                    </div>
+                  </div>
+                  <li>Jūsų prekės bus pristatytos į artimiausią paštomatą</li>
+                  <li>Pradėję pirkimą, jūs sutinkate su mūsų prekių pardavimo taisyklėmis</li>
+                  <li>Jūsų atsiskaitymas bus atliktas naudojantis Paysera paslaugomis</li>
                   <button type="submit">Pateikti</button>
                 </form>
-
               </div>
             </div>
 

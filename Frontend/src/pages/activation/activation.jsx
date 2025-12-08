@@ -1,12 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function Activation({ addToCart, setErrors, cursor, noImage }) {
 
+    const [success, setSuccess] = useState(2);
+
     const pathname = window.location.pathname;
-
-    // Extract the number and the string after the number using regular expressions
     const matches = pathname.match(/\/activation\/(\d+)\/([^/]+)/) || [];
-
     const activationNumber = matches[1] || '';
     const activationString = matches[2] || '';
 
@@ -34,7 +33,11 @@ function Activation({ addToCart, setErrors, cursor, noImage }) {
                 setErrors((prevErrors) => [
                     ...prevErrors,
                     'Nepavyko aktyvuoti paskyros, bandykite jungtis iš naujo',
-                ]); 
+                ]);
+                setSuccess(0);
+                console.log(success)
+            } else {
+               setSuccess(1);
             }
         } catch (error) {
             setErrors((prevErrors) => [

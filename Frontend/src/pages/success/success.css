@@ -3,6 +3,11 @@
     padding-block: 10px;
     margin: 0 auto;
 }
+.orderPayment .loading {
+    margin: auto;
+    text-align: center;
+    padding: 250px;
+}
 .orderPayment .orderItems {
     display: flex;
     flex-direction: column;
