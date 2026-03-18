@@ -1,0 +1,1 @@
+This is an old project where i used react for the first time to make a shopping website. It has working paysera payments and payment confirmation and tracking of transcations made. Use it as an example of how to not write code
